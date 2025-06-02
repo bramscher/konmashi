@@ -1,0 +1,195 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - extends Supabase auth.users
+model User {
+  id       String @id @default(uuid()) // matches Supabase auth.users.id
+  email    String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  hasCompletedOnboarding Boolean @default(false)
+
+  // Relations
+  brandIdentity BrandIdentity?
+  ideabankEntries IdeabankEntry[]
+  contentRequests ContentRequest[]
+  socialConnections SocialConnection[]
+
+  @@map("users")
+}
+
+// Brand Identity model - stores user's brand information
+model BrandIdentity {
+  id          String @id @default(uuid())
+  userId      String @unique
+  brandName   String?
+  industry    String?
+  voiceDescriptors String[] // array of voice keywords like "playful", "professional"
+  targetAudience String? // brief description
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("brand_identities")
+}
+
+// Ideabank entries - for capturing text and link ideas
+model IdeabankEntry {
+  id          String @id @default(uuid())
+  userId      String
+  type        IdeaType // TEXT or LINK
+  content     String // text content or URL
+  note        String? // optional note/description
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("ideabank_entries")
+}
+
+// Content requests and generated content
+model ContentRequest {
+  id          String @id @default(uuid())
+  userId      String
+  type        ContentType // TEXT_POST, IMAGE_POST, VIDEO_SCRIPT
+  prompt      String // user's original request
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  generatedContent GeneratedContent[]
+  feedback ContentFeedback[]
+
+  @@map("content_requests")
+}
+
+// Generated content pieces
+model GeneratedContent {
+  id            String @id @default(uuid())
+  requestId     String
+  version       Int @default(1) // for iteration tracking
+  contentType   ContentType
+  textContent   String? // for text posts and captions
+  imageUrl      String? // for generated images
+  scriptContent String? // for video scripts
+  metadata      Json? // additional data like platform optimizations
+  isApproved    Boolean @default(false)
+  createdAt     DateTime @default(now())
+
+  // Relations
+  contentRequest ContentRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  feedback ContentFeedback[]
+  scheduledPosts ScheduledPost[]
+
+  @@map("generated_content")
+}
+
+// Feedback on generated content
+model ContentFeedback {
+  id          String @id @default(uuid())
+  requestId   String
+  contentId   String
+  rating      Int? // 1-5 star rating
+  comment     String? // text feedback
+  createdAt   DateTime @default(now())
+
+  // Relations
+  contentRequest ContentRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  generatedContent GeneratedContent @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@map("content_feedback")
+}
+
+// Social media platform connections
+model SocialConnection {
+  id          String @id @default(uuid())
+  userId      String
+  platform    SocialPlatform
+  platformUserId String // user's ID on the platform
+  accessToken String // encrypted token
+  refreshToken String? // for platforms that support it
+  isActive    Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheduledPosts ScheduledPost[]
+
+  @@unique([userId, platform])
+  @@map("social_connections")
+}
+
+// Scheduled posts
+model ScheduledPost {
+  id          String @id @default(uuid())
+  contentId   String
+  connectionId String
+  scheduledFor DateTime
+  status      PostStatus @default(SCHEDULED)
+  platformPostId String? // ID returned by the platform after posting
+  error       String? // error message if posting fails
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  generatedContent GeneratedContent @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  socialConnection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@map("scheduled_posts")
+}
+
+// Enums
+enum IdeaType {
+  TEXT
+  LINK
+}
+
+enum ContentType {
+  TEXT_POST
+  IMAGE_POST
+  VIDEO_SCRIPT
+}
+
+enum RequestStatus {
+  PENDING
+  IN_PROGRESS
+  READY_FOR_REVIEW
+  APPROVED
+  FAILED
+}
+
+enum SocialPlatform {
+  INSTAGRAM
+  TIKTOK
+  YOUTUBE
+  LINKEDIN
+  FACEBOOK
+  PINTEREST
+}
+
+enum PostStatus {
+  SCHEDULED
+  POSTING
+  POSTED
+  FAILED
+}

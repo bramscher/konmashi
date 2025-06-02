@@ -1,0 +1,21 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Example Rule
+
+This is a sample rule to demonstrate the .mdc file structure.
+
+## Purpose
+- Shows how to structure rule files
+- Demonstrates frontmatter configuration
+- Provides example content format
+
+## Usage
+This rule will be automatically attached when TypeScript or TSX files are referenced in chat.
+
+## Guidelines
+- Use clear, actionable instructions
+- Keep rules focused and specific
+- Include examples where helpful
