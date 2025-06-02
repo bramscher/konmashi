@@ -1,7 +1,8 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { User as SupabaseUser, Session } from '@supabase/auth-helpers-nextjs'
+import { AuthError } from '@supabase/supabase-js'
 import { createSupabaseClient } from './supabase'
 import { User as PrismaUser } from '@/generated/prisma'
 
@@ -11,10 +12,10 @@ interface AuthContextType {
   prismaUser: PrismaUser | null
   hasCompletedOnboarding: boolean | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error?: any }>
-  signUp: (email: string, password: string) => Promise<{ error?: any }>
+  signIn: (email: string, password: string) => Promise<{ error?: AuthError | null }>
+  signUp: (email: string, password: string) => Promise<{ error?: AuthError | null }>
   signOut: () => Promise<void>
-  resetPassword: (email: string) => Promise<{ error?: any }>
+  resetPassword: (email: string) => Promise<{ error?: AuthError | null }>
   fetchPrismaUser: (userId: string) => Promise<void>
 }
 
@@ -29,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   const supabase = createSupabaseClient()
 
-  const fetchAndSetPrismaUser = async (supabaseUserId: string, userEmail?: string) => {
+  const fetchAndSetPrismaUser = useCallback(async (supabaseUserId: string, userEmail?: string) => {
     if (!supabaseUserId) return;
     const emailForSync = userEmail || (user && user.id === supabaseUserId ? user.email : undefined);
 
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setPrismaUser(null);
       setHasCompletedOnboarding(null);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     const getInitialSessionAndUser = async () => {
@@ -93,15 +94,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [fetchAndSetPrismaUser, supabase.auth, loading]);
 
   const signIn = async (email: string, password: string) => {
     const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if (!error && data.user) {
-    }
     return { error };
   };
 
@@ -113,8 +112,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     });
-    if (!error && data.user) {
-    }
     return { error };
   };
 

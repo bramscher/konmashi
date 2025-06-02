@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
-import { createClient } from '@/lib/supabase/client';
+import { toast } from 'sonner';
+import { createSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
 import { Session } from '@supabase/supabase-js';
 
@@ -29,8 +29,7 @@ export default function ResetPasswordPage() {
   const [session, setSession] = useState<Session | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { toast } = useToast();
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
@@ -60,7 +59,7 @@ export default function ResetPasswordPage() {
     checkSession();
 
     return () => {
-      authListener?.unsubscribe();
+      authListener?.subscription?.unsubscribe();
     };
   }, [supabase]);
 
@@ -74,10 +73,8 @@ export default function ResetPasswordPage() {
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
     if (!session) {
-      toast({
-        title: 'Session not found or invalid',
+      toast.error('Session not found or invalid', {
         description: 'Please request a new password reset link if the current one has expired or is invalid.',
-        variant: 'destructive',
       });
       setError('No valid session for password reset. The link may have expired or been used. Please try requesting a password reset again.');
       return;
@@ -90,15 +87,10 @@ export default function ResetPasswordPage() {
       });
 
       if (updateError) {
-        toast({
-          title: 'Error resetting password',
-          description: updateError.message,
-          variant: 'destructive',
-        });
+        toast.error('Error resetting password', { description: updateError.message });
         setError(updateError.message);
       } else {
-        toast({
-          title: 'Password Reset Successful',
+        toast.success('Password Reset Successful', {
           description: 'Your password has been updated. You can now login with your new password.',
         });
         router.push('/login');
@@ -106,11 +98,7 @@ export default function ResetPasswordPage() {
     } catch (err) {
       console.error('Reset password error:', err);
       const message = err instanceof Error ? err.message : 'An unexpected error occurred.';
-      toast({
-        title: 'An unexpected error occurred',
-        description: message,
-        variant: 'destructive',
-      });
+      toast.error('An unexpected error occurred', { description: message });
       setError(message);
     }
     setLoading(false);

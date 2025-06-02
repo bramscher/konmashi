@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
-import { createClient } from '@/lib/supabase/client';
+import { toast } from 'sonner';
+import { createSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
 
 const forgotPasswordSchema = z.object({
@@ -21,8 +21,7 @@ type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
 export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const { toast } = useToast();
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -40,25 +39,16 @@ export default function ForgotPasswordPage() {
       });
 
       if (error) {
-        toast({
-          title: 'Error sending reset link',
-          description: error.message,
-          variant: 'destructive',
-        });
+        toast.error('Error sending reset link', { description: error.message });
       } else {
-        toast({
-          title: 'Password Reset Email Sent',
+        toast.success('Password Reset Email Sent', {
           description: 'If an account exists for this email, a password reset link has been sent.',
         });
         form.reset();
       }
     } catch (error) {
       console.error('Forgot password error:', error);
-      toast({
-        title: 'An unexpected error occurred',
-        description: 'Please try again.',
-        variant: 'destructive',
-      });
+      toast.error('An unexpected error occurred', { description: 'Please try again.' });
     }
     setLoading(false);
   };
