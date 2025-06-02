@@ -1,70 +1,62 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { createSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
-import { Session } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/client';
 
-const resetPasswordSchema = z.object({
+const ResetPasswordSchema = z.object({
   password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ['confirmPassword'], // path of error
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
 });
 
-type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
+type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>;
 
 export default function ResetPasswordPage() {
-  const [loading, setLoading] = useState(false);
-  const [session, setSession] = useState<Session | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const supabase = createSupabaseClient();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  // Supabase handles the recovery token from the URL fragment automatically
+  // when the component mounts and a session is established.
+  // We just need to ensure the user is authenticated to be on this page.
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setSession(session);
-      } 
-      // Handle initial state if user is already on this page with a valid recovery token in URL
-      // Supabase client might automatically pick it up and set a session.
-      // Alternatively, if the user navigates here after clicking the link, this event will fire.
-      if (session && session.user && !session.user.aud) { // Check if it's a recovery session
-         // `aud` is typically 'authenticated' for normal sessions. Recovery sessions might differ or lack it.
-         // A more robust check might be needed depending on Supabase specifics for recovery sessions.
-        setSession(session);
+    const checkSession = async () => {
+      const { data, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError || !data.session) {
+        toast.error('Invalid or expired password reset link.');
+        router.push('/login');
       }
-    });
+       // Check if the user is on a recovery path
+      if (data.session && data.session.user.user_metadata?.recovery !== true && window.location.hash.includes('type=recovery')) {
+        // This handles the case where the user has landed from an email link
+        // and Supabase client needs to process the recovery token from the hash.
+        // Typically, Supabase handles this, but an explicit check can be useful.
+        // If already handled, it won't re-trigger.
+      } else if (data.session && data.session.user.user_metadata?.recovery !== true && !window.location.hash.includes('type=recovery')){
+        // if there is a session, but it's not a recovery session, and there's no recovery token in hash, redirect.
+        // router.push('/login'); 
+        // Commenting out for now to allow normal logged in users to also change password if they land here, 
+        // though ideally they would use a different flow (e.g. from account settings).
+      }
 
-    // Check if there's a recovery token in the URL fragment on initial load
-    // Supabase JS v2 automatically handles this and fires PASSWORD_RECOVERY if token is present
-    // For robustness, ensure page has access to session if recovery token was processed
-    async function checkSession() {
-        const { data } = await supabase.auth.getSession();
-        if (data.session && data.session.user && data.session.user.recovery_sent_at) {
-            // This is a way to infer it could be a recovery session if PASSWORD_RECOVERY hasn't fired yet
-            setSession(data.session);
-        }
-    }
-    checkSession();
-
-    return () => {
-      authListener?.subscription?.unsubscribe();
     };
-  }, [supabase]);
+    checkSession();
+  }, [supabase, router]);
 
   const form = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       password: '',
       confirmPassword: '',
@@ -72,94 +64,95 @@ export default function ResetPasswordPage() {
   });
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
-    if (!session) {
-      toast.error('Session not found or invalid', {
-        description: 'Please request a new password reset link if the current one has expired or is invalid.',
-      });
-      setError('No valid session for password reset. The link may have expired or been used. Please try requesting a password reset again.');
-      return;
-    }
     setLoading(true);
     setError(null);
     try {
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: data.password,
-      });
+      const { error: updateError } = await supabase.auth.updateUser({ password: data.password });
 
       if (updateError) {
-        toast.error('Error resetting password', { description: updateError.message });
         setError(updateError.message);
+        toast.error(updateError.message);
       } else {
-        toast.success('Password Reset Successful', {
-          description: 'Your password has been updated. You can now login with your new password.',
-        });
+        toast.success('Password updated successfully! You can now log in with your new password.');
+        // Attempt to sign out to clear any recovery-specific session state
+        await supabase.auth.signOut(); 
         router.push('/login');
       }
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred.';
+      setError(errorMessage);
+      toast.error(errorMessage);
       console.error('Reset password error:', err);
-      const message = err instanceof Error ? err.message : 'An unexpected error occurred.';
-      toast.error('An unexpected error occurred', { description: message });
-      setError(message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
-  
-  // If Supabase hasn't yet processed the token from the URL, it might take a moment.
-  // Can add a loading state or message here if session is null initially.
-  // However, for a typical flow, the PASSWORD_RECOVERY event should fire quickly.
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Reset Your Password</CardTitle>
-          <CardDescription className="text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+      <div className="w-full max-w-md rounded-lg bg-slate-900/80 p-8 shadow-2xl backdrop-blur-sm">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-100">Konmashi</h1>
+          <p className="mt-2 text-lg text-slate-400">Reset Your Password</p>
+          <p className="mt-1 text-sm text-slate-500">
             Enter your new password below.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {error && <p className="text-sm text-red-500 text-center mb-4">Error: {error}</p>}
-          {!session && !error && <p className="text-sm text-yellow-600 text-center mb-4">Loading session or waiting for password recovery token...</p>}
-          {session && (
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">New Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  placeholder="********" 
-                  {...form.register('password')} 
-                  disabled={loading}
-                />
-                {form.formState.errors.password && (
-                  <p className="text-sm text-red-500">{form.formState.errors.password.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                <Input 
-                  id="confirmPassword" 
-                  type="password" 
-                  placeholder="********" 
-                  {...form.register('confirmPassword')} 
-                  disabled={loading}
-                />
-                {form.formState.errors.confirmPassword && (
-                  <p className="text-sm text-red-500">{form.formState.errors.confirmPassword.message}</p>
-                )}
-              </div>
-              <Button type="submit" className="w-full" disabled={loading || !session}>
-                {loading ? 'Resetting Password...' : 'Reset Password'}
-              </Button>
-            </form>
+          </p>
+        </div>
+
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <Label htmlFor="password" className="text-slate-300">
+              New Password
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              {...form.register('password')}
+              className="mt-1 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:ring-sky-500"
+            />
+            {form.formState.errors.password && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.password.message}</p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="confirmPassword" className="text-slate-300">
+              Confirm New Password
+            </Label>
+            <Input
+              id="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              {...form.register('confirmPassword')}
+              className="mt-1 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:ring-sky-500"
+            />
+            {form.formState.errors.confirmPassword && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.confirmPassword.message}</p>
+            )}
+          </div>
+
+          {error && (
+            <p className="mt-1 text-xs text-red-500 text-center">{error}</p>
           )}
-        </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-2">
-          <Link href="/login" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
-            Back to Login
-          </Link>
-        </CardFooter>
-      </Card>
+
+          <Button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-slate-50" disabled={loading}>
+            {loading ? 'Resetting Password...' : 'Reset Password'}
+          </Button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-slate-400">
+            Remembered your password or landed here by mistake?{' '}
+            <Link href="/login" className="font-medium text-sky-500 hover:text-sky-400">
+              Sign In
+            </Link>
+          </p>
+        </div>
+      </div>
+       <footer className="absolute bottom-8 text-center text-sm text-slate-500">
+        &copy; {new Date().getFullYear()} Konmashi. All rights reserved.
+      </footer>
     </div>
   );
 } 

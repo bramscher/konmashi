@@ -27,6 +27,8 @@ model User {
   ideabankEntries IdeabankEntry[]
   contentRequests ContentRequest[]
   socialConnections SocialConnection[]
+  teamMemberships TeamMember[] // new: user can belong to multiple teams
+  superAdmin SuperAdmin?
 
   @@map("users")
 }
@@ -192,4 +194,41 @@ enum PostStatus {
   POSTING
   POSTED
   FAILED
+}
+
+model Team {
+  id           String      @id @default(uuid())
+  name         String
+  licenseCount Int
+  members      TeamMember[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@map("teams")
+}
+
+model TeamMember {
+  id       String   @id @default(uuid())
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId   String
+  role     TeamRole
+  joinedAt DateTime @default(now())
+
+  @@unique([userId, teamId])
+  @@map("team_members")
+}
+
+enum TeamRole {
+  MEMBER
+  ADMIN
+}
+
+model SuperAdmin {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+
+  @@map("super_admins")
 }

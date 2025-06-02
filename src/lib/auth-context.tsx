@@ -30,6 +30,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   
   const supabase = createSupabaseClient()
 
+  console.log('AuthProvider rendered (should only see this on the client!)');
+
   const fetchAndSetPrismaUser = useCallback(async (supabaseUserId: string, userEmail?: string) => {
     if (!supabaseUserId) return;
     const emailForSync = userEmail || (user && user.id === supabaseUserId ? user.email : undefined);
@@ -42,6 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           id: supabaseUserId, 
           email: emailForSync
         }),
+        credentials: 'include',
       });
       if (!response.ok) {
         const errorData = await response.json();
@@ -66,11 +69,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user]);
 
   useEffect(() => {
+    console.log('AuthProvider useEffect running (should only run on the client!)');
+    // Only run this effect once on mount to prevent infinite loops.
+    // If you need to respond to auth state changes, use the onAuthStateChange handler inside.
     const getInitialSessionAndUser = async () => {
       const { data: { session: initialSession } } = await supabase.auth.getSession();
       setSession(initialSession);
       setUser(initialSession?.user ?? null);
-      if (initialSession?.user) {
+      if (initialSession && initialSession.user && initialSession.access_token) {
         await fetchAndSetPrismaUser(initialSession.user.id, initialSession.user.email);
       }
       setLoading(false);
@@ -83,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(currentSession);
         setUser(currentSession?.user ?? null);
         
-        if (event === 'SIGNED_IN' && currentSession?.user) {
+        if (event === 'SIGNED_IN' && currentSession && currentSession.user && currentSession.access_token) {
           await fetchAndSetPrismaUser(currentSession.user.id, currentSession.user.email);
         } else if (event === 'SIGNED_OUT') {
           setPrismaUser(null);
@@ -94,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     );
 
     return () => subscription.unsubscribe();
-  }, [fetchAndSetPrismaUser, supabase.auth, loading]);
+  }, []); // <-- Only run once on mount
 
   const signIn = async (email: string, password: string) => {
     const { error, data } = await supabase.auth.signInWithPassword({

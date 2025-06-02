@@ -1,24 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-// import { createSupabaseServerClient } from '@/lib/supabase' // We will use createRouteHandlerClient directly
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
   try {
     const { id, email: payloadEmail } = await request.json()
 
-    // Verify the request is from an authenticated user
-    const supabase = createRouteHandlerClient({ cookies })
-    
-    const { data: { session } } = await supabase.auth.getSession()
+    // Get all cookies
+    const allCookies = await cookies();
+    console.log('All cookies:', Array.from(allCookies));
+    // Get the Supabase auth token from the correct cookie name (await cookies() for App Router)
+    let rawToken = (await cookies()).get('sb-ovzistntcsomqddezegq-auth-token')?.value;
+    console.log('Raw Supabase auth token:', rawToken, 'Type:', typeof rawToken);
+    // If the token is a JSON array, parse and use the first element
+    let token = rawToken;
+    if (typeof rawToken === 'string' && rawToken.startsWith('[')) {
+      try {
+        const arr = JSON.parse(rawToken);
+        token = Array.isArray(arr) ? arr[0] : rawToken;
+        console.log('Parsed token from array:', token);
+      } catch (e) {
+        console.log('Error parsing token array:', e);
+      }
+    }
+    if (!token) {
+      console.log('No Supabase auth token found');
+      return NextResponse.json({ error: 'Unauthorized: No auth token found' }, { status: 401 })
+    }
 
-    if (!session || session.user.id !== id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    // Create a Supabase client with the token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      { global: { headers: { Authorization: `Bearer ${token}` } } }
+    )
+
+    // Get the user session
+    const { data: { user: sessionUser }, error: sessionError } = await supabase.auth.getUser(token)
+    console.log('Result of supabase.auth.getUser():', sessionUser, sessionError);
+
+    if (sessionError || !sessionUser || sessionUser.id !== id) {
+      return NextResponse.json({ error: 'Unauthorized: Invalid or expired token' }, { status: 401 })
     }
 
     // Determine the email to use. Prioritize payload, then session.
-    const email = payloadEmail || session.user.email;
+    const email = payloadEmail || sessionUser.email;
 
     if (!email) {
       // This should ideally not happen if the user is authenticated via Supabase

@@ -1,6 +1,13 @@
+"use client";
+
 import Link from 'next/link'
+import { useEffect, useState } from 'react';
 
 export default function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
   return (
     <footer className="border-t bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -98,7 +105,7 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="mt-8 pt-8 border-t flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Konmashi. All rights reserved.
+            © {year ?? ''} Konmashi. All rights reserved.
           </div>
           
           {/* Social Media Links */}

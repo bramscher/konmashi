@@ -85,8 +85,8 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 1.7.2 Implement logic to check hasCompletedOnboarding after login/signup
     - [x] 1.7.3 Redirect users with hasCompletedOnboarding=false to the brand setup page (`/dashboard/brand-setup`)
     - [x] 1.7.4 Update hasCompletedOnboarding to true in the database after successful brand setup submission
-  - [ ] 1.8 Add role-based access control (RBAC) foundation for future agency features
-  - [x] 1.9 Implement session management and auto-refresh tokens
+  - [x] 1.8 Add role-based access control (RBAC) foundation for future agency features
+  - [x] 1.9 Implement session management and auto-refresh tokensnpm runnpm 
   - [x] 1.10 Create legal compliance framework with privacy policy and terms integration
 
 - [ ] 2.0 AI Content Generation Core Features  
@@ -141,4 +141,6 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [ ] 5.9 Create automated content suggestions based on performance data
   - [ ] 5.10 Build content backup and export functionality
   - [ ] 5.11 Implement content compliance checking for platform policies
-  - [ ] 5.12 Create workflow automation rules and triggers 
+  - [ ] 5.12 Create workflow automation rules and triggers
+
+// RBAC/team foundation: Added Team, TeamMember, TeamRole, SuperAdmin models and migration in Prisma schema. 

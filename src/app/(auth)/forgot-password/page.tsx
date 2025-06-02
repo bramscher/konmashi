@@ -1,30 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { createSupabaseClient } from '@/lib/supabase';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
 
-const forgotPasswordSchema = z.object({
+const ForgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
 });
 
-type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+type ForgotPasswordFormValues = z.infer<typeof ForgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const supabase = createSupabaseClient();
+  const supabase = createClient();
 
   const form = useForm<ForgotPasswordFormValues>({
-    resolver: zodResolver(forgotPasswordSchema),
+    resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
       email: '',
     },
@@ -32,63 +32,70 @@ export default function ForgotPasswordPage() {
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     setLoading(true);
-    setMessage('');
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}/reset-password`,
+        redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
       });
 
       if (error) {
-        toast.error('Error sending reset link', { description: error.message });
+        toast.error(error.message);
       } else {
-        toast.success('Password Reset Email Sent', {
-          description: 'If an account exists for this email, a password reset link has been sent.',
-        });
+        toast.success('Password reset email sent. Please check your inbox.');
         form.reset();
       }
     } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.');
       console.error('Forgot password error:', error);
-      toast.error('An unexpected error occurred', { description: 'Please try again.' });
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">Forgot Password</CardTitle>
-          <CardDescription className="text-center">
-            Enter your email address and we'll send you a link to reset your password.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input 
-                id="email" 
-                type="email" 
-                placeholder="you@example.com" 
-                {...form.register('email')} 
-                disabled={loading}
-              />
-              {form.formState.errors.email && (
-                <p className="text-sm text-red-500">{form.formState.errors.email.message}</p>
-              )}
-            </div>
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Sending...' : 'Send Reset Link'}
-            </Button>
-            {message && <p className="text-sm text-green-500 text-center">{message}</p>}
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col items-center space-y-2">
-          <Link href="/login" className="text-sm text-blue-600 hover:underline dark:text-blue-400">
-            Remember your password? Login
-          </Link>
-        </CardFooter>
-      </Card>
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+      <div className="w-full max-w-md rounded-lg bg-slate-900/80 p-8 shadow-2xl backdrop-blur-sm">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-slate-100">Konmashi</h1>
+          <p className="mt-2 text-lg text-slate-400">Forgot Your Password?</p>
+          <p className="mt-1 text-sm text-slate-500">
+            No worries! Enter your email below and we'll send you a link to reset it.
+          </p>
+        </div>
+
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <Label htmlFor="email" className="text-slate-300">
+              Email
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              {...form.register('email')}
+              className="mt-1 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500 focus:border-sky-500 focus:ring-sky-500"
+            />
+            {form.formState.errors.email && (
+              <p className="mt-1 text-xs text-red-500">{form.formState.errors.email.message}</p>
+            )}
+          </div>
+
+          <Button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-slate-50" disabled={loading}>
+            {loading ? 'Sending...' : 'Send Reset Link'}
+          </Button>
+        </form>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-slate-400">
+            Remember your password?{' '}
+            <Link href="/login" className="font-medium text-sky-500 hover:text-sky-400">
+              Sign In
+            </Link>
+          </p>
+        </div>
+      </div>
+      <footer className="absolute bottom-8 text-center text-sm text-slate-500">
+        &copy; {new Date().getFullYear()} Konmashi. All rights reserved.
+      </footer>
     </div>
   );
 } 
