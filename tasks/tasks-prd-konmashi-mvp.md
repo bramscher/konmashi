@@ -109,7 +109,7 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 1.12.6 Document accessibility improvements and known limitations
 
 - [ ] 2.0 AI Content Generation Core Features  
-  - [ ] 2.1 Integrate toolkit.hangten.studio API client with authentication
+  - [x] 2.1 Integrate toolkit.hangten.studio API client with authentication
   - [ ] 2.2 Build conversational Orchestrator AI chat interface with context management
   - [ ] 2.3 Implement text-based social media post generation with brand voice integration
   - [ ] 2.4 Implement AI image-based post generation with brand style and caption creation
