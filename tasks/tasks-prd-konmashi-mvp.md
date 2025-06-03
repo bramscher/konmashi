@@ -111,6 +111,19 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
 - [ ] 2.0 AI Content Generation Core Features  
   - [x] 2.1 Integrate toolkit.hangten.studio API client with authentication
   - [ ] 2.2 Build conversational Orchestrator AI chat interface with context management
+    - [x] 2.2.1 Scaffold chat UI component (message list, input, send button)
+    - [x] 2.2.2 Display and manage chat history in the UI (unique per droid, preserved on switch)
+    - [ ] 2.2.3 Create /api/ai/orchestrator-chat API route
+    - [ ] 2.2.4 Integrate brand/user context into chat API requests
+    - [ ] 2.2.5 Format and send chat requests to toolkit API (multi-turn)
+    - [x] 2.2.6 Handle and display AI responses in the UI
+    - [ ] 2.2.7 (Optional) Persist chat history (localStorage or DB)
+    - [ ] 2.2.8 Add tests for chat API and UI
+    - [x] 2.2.9 Accessibility and UX review (keyboard, ARIA, color contrast, focus)
+    - [x] 2.2.10 Sidebar and dashboard use 'Droid' terminology and show persona name and role
+    - [x] 2.2.11 Each droid has a unique chat history and greeting
+    - [x] 2.2.12 System prompt (brain prompt) is editable and only shown when editing
+    - [x] 2.2.13 Chat is functional for all droids and updates correctly when switching
   - [ ] 2.3 Implement text-based social media post generation with brand voice integration
   - [ ] 2.4 Implement AI image-based post generation with brand style and caption creation
   - [ ] 2.5 Implement short-form video concept/script generation with faceless video suggestions

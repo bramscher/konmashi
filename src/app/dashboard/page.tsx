@@ -3,13 +3,16 @@
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Sidebar from '@/components/dashboard/Sidebar'
+import DroidChat from '@/components/ui/PersonaChat'
 
 export default function DashboardPage() {
   const auth = useAuth()
   const { user, hasCompletedOnboarding, loading, signOut } = auth
   const router = useRouter()
   const pathname = usePathname()
+  const [selectedDroid, setSelectedDroid] = useState('orchestrator')
 
   useEffect(() => {
     if (!loading && !user) {
@@ -69,150 +72,26 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">K</span>
-            </div>
-            <span className="text-xl font-bold">Konmashi</span>
+    <div className="min-h-screen bg-background flex">
+      {/* Sidebar */}
+      <Sidebar selectedPersona={selectedDroid} onSelectPersona={setSelectedDroid} />
+      {/* Main content */}
+      <main className="flex-1 p-8 overflow-y-auto">
+        <h1 className="text-3xl font-bold mb-8">Welcome to your Konmashi Dashboard</h1>
+        {/* Two-column layout: Chat (left), Canvas (right) */}
+        <section className="mb-10 flex flex-col md:flex-row gap-6 h-[70vh]">
+          {/* Left: Chat or Persona Widget */}
+          <div className="flex-1 md:w-1/2 h-full flex flex-col">
+            {selectedDroid && <DroidChat droidKey={selectedDroid} />}
           </div>
-          
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground">
-              Welcome, {user.email}
-            </span>
-            <Button variant="outline" onClick={handleSignOut}>
-              Sign Out
-            </Button>
+          {/* Right: Canvas */}
+          <div className="flex-1 md:w-1/2 h-full bg-muted rounded-lg flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold mb-2">Canvas Area</h2>
+            <p className="text-muted-foreground text-center max-w-xs">This area will display outputs, previews, and context for the selected persona. (To be flushed out.)</p>
           </div>
-        </div>
-      </header>
-
-      {/* Dashboard content */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-8">Welcome to your Konmashi Dashboard</h1>
-          
-          {/* Persona Droids Section */}
-          <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-2">Meet Your AI Marketing Team</h2>
-            <p className="text-muted-foreground mb-6 max-w-2xl">
-              Konmashi is powered by a team of specialized AI personas—each modeled after a key role in a high-performing marketing agency. These agentic personas collaborate to help you strategize, create, analyze, and grow your brand 24/7.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">🤖</span>
-                <div className="font-bold">Orchestrator</div>
-                <div className="text-xs text-muted-foreground">Team Lead</div>
-              </div>
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">🧠</span>
-                <div className="font-bold">Strategist</div>
-                <div className="text-xs text-muted-foreground">Content Strategy</div>
-              </div>
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">✍️</span>
-                <div className="font-bold">Copywriter</div>
-                <div className="text-xs text-muted-foreground">Writing & Messaging</div>
-              </div>
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">🎨</span>
-                <div className="font-bold">Designer</div>
-                <div className="text-xs text-muted-foreground">Visuals & Branding</div>
-              </div>
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">📊</span>
-                <div className="font-bold">Analyst</div>
-                <div className="text-xs text-muted-foreground">Analytics</div>
-              </div>
-              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
-                <span className="text-3xl mb-2">💬</span>
-                <div className="font-bold">Community Manager</div>
-                <div className="text-xs text-muted-foreground">Engagement</div>
-              </div>
-            </div>
-          </section>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {/* Placeholder cards for future features */}
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Content Generation</h3>
-              <p className="text-muted-foreground mb-4">
-                Create AI-powered content for your brand
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Ideabank</h3>
-              <p className="text-muted-foreground mb-4">
-                Capture and organize your content ideas
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Social Connections</h3>
-              <p className="text-muted-foreground mb-4">
-                Connect your social media accounts
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Brand Identity</h3>
-              <p className="text-muted-foreground mb-4">
-                Define your brand voice and style
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Content Calendar</h3>
-              <p className="text-muted-foreground mb-4">
-                Schedule and manage your posts
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-
-            <div className="p-6 rounded-lg border bg-card">
-              <h3 className="text-lg font-semibold mb-2">Analytics</h3>
-              <p className="text-muted-foreground mb-4">
-                Track your content performance
-              </p>
-              <Button variant="outline" className="w-full" disabled>
-                Coming Soon
-              </Button>
-            </div>
-          </div>
-
-          <div className="bg-muted/50 p-6 rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">🚧 Under Construction</h2>
-            <p className="text-muted-foreground">
-              Your Konmashi dashboard is being built! The next development phase will include:
-            </p>
-            <ul className="list-disc list-inside mt-4 space-y-1 text-muted-foreground">
-              <li>AI-powered content generation</li>
-              <li>Brand identity setup</li>
-              <li>Content ideabank and management</li>
-              <li>Social media integrations</li>
-              <li>Content scheduling and publishing</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        </section>
+        {/* Existing dashboard content can go here, or be moved into persona widgets as needed */}
+      </main>
     </div>
   )
 } 
