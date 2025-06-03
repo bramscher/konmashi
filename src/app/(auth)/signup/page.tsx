@@ -119,7 +119,7 @@ export default function SignupPage() {
               className={errors.email ? 'border-destructive' : ''}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
+              <p className="text-sm text-destructive" role="alert">{errors.email.message}</p>
             )}
           </div>
 
@@ -133,7 +133,7 @@ export default function SignupPage() {
               className={errors.password ? 'border-destructive' : ''}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="text-sm text-destructive" role="alert">{errors.password.message}</p>
             )}
           </div>
 
@@ -147,7 +147,7 @@ export default function SignupPage() {
               className={errors.confirmPassword ? 'border-destructive' : ''}
             />
             {errors.confirmPassword && (
-              <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+              <p className="text-sm text-destructive" role="alert">{errors.confirmPassword.message}</p>
             )}
           </div>
 
@@ -172,7 +172,7 @@ export default function SignupPage() {
             </Label>
           </div>
           {errors.acceptTerms && (
-            <p className="text-sm text-destructive">{errors.acceptTerms.message}</p>
+            <p className="text-sm text-destructive" role="alert">{errors.acceptTerms.message}</p>
           )}
 
           <Button type="submit" className="w-full" disabled={isLoading}>

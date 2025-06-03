@@ -95,7 +95,7 @@ export default function BrandSetupPage() {
               <Label htmlFor="brandName">Brand Name</Label>
               <Input id="brandName" {...form.register('brandName')} disabled={loading} />
               {form.formState.errors.brandName && (
-                <p className="text-sm text-red-500 pt-1">{form.formState.errors.brandName.message}</p>
+                <p className="text-sm text-red-500 pt-1" role="alert">{form.formState.errors.brandName.message}</p>
               )}
             </div>
 
@@ -103,7 +103,7 @@ export default function BrandSetupPage() {
               <Label htmlFor="industry">Industry</Label>
               <Input id="industry" {...form.register('industry')} disabled={loading} />
               {form.formState.errors.industry && (
-                <p className="text-sm text-red-500 pt-1">{form.formState.errors.industry.message}</p>
+                <p className="text-sm text-red-500 pt-1" role="alert">{form.formState.errors.industry.message}</p>
               )}
             </div>
 
@@ -116,7 +116,7 @@ export default function BrandSetupPage() {
                 disabled={loading}
               />
               {form.formState.errors.voiceDescriptors && (
-                <p className="text-sm text-red-500 pt-1">{form.formState.errors.voiceDescriptors.message}</p>
+                <p className="text-sm text-red-500 pt-1" role="alert">{form.formState.errors.voiceDescriptors.message}</p>
               )}
             </div>
 
@@ -129,7 +129,7 @@ export default function BrandSetupPage() {
                 disabled={loading}
               />
               {form.formState.errors.targetAudience && (
-                <p className="text-sm text-red-500 pt-1">{form.formState.errors.targetAudience.message}</p>
+                <p className="text-sm text-red-500 pt-1" role="alert">{form.formState.errors.targetAudience.message}</p>
               )}
             </div>
 

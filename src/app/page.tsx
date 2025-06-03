@@ -18,7 +18,7 @@ export default function Home() {
             <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
               Features
             </Link>
-            <Link href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
+            <Link href="/pricing" className="text-muted-foreground hover:text-foreground transition-colors">
               Pricing
             </Link>
             <Link href="#about" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -41,13 +41,14 @@ export default function Home() {
       <section className="container mx-auto px-4 py-20 text-center">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent mb-6">
-            Amplify Your Content Creation with AI
+            Your AI Marketing Team, Working 24/7
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Transform your content marketing workflow with Konmashi's AI-powered platform. 
-            Generate, schedule, and publish content across multiple social media platforms with superhuman efficiency.
+          <p className="text-xl text-muted-foreground mb-4 max-w-2xl mx-auto">
+            Meet Konmashi: a full agency of expert AI personas—strategist, copywriter, designer, analyst, and more—always on, always ready to create, plan, and grow your brand. No hiring, no downtime. Just results.
           </p>
-          
+          <p className="text-lg text-primary mb-8 max-w-2xl mx-auto">
+            <strong>Customize your team:</strong> Personalize each AI persona to match your business, industry, and unique brand voice. Your team adapts to you.
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Link href="/signup">
               <Button size="lg" className="w-full sm:w-auto">
@@ -60,9 +61,8 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-
           <div className="text-sm text-muted-foreground">
-            ✨ Connect to Instagram, TikTok, YouTube, LinkedIn, Facebook & Pinterest
+            ✨ Your AI team never sleeps—connect to Instagram, TikTok, YouTube, LinkedIn, Facebook & Pinterest
           </div>
         </div>
       </section>
@@ -155,6 +155,95 @@ export default function Home() {
             <p className="text-muted-foreground">
               Track performance, gather feedback, and continuously improve your content strategy with AI-powered analytics.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Personas Section */}
+      <section className="container mx-auto px-4 py-20" id="personas">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Meet Your 24/7 AI Marketing Team
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4">
+            With Konmashi, you get a full agency of expert AI personas—each with a unique specialty, always available, always working for you.
+          </p>
+          <p className="text-lg text-primary max-w-2xl mx-auto">
+            <strong>Tailor your team:</strong> Adjust each persona's style, tone, and focus to fit your business, industry, and brand. Your AI team is as unique as you are.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Content Strategist */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">📈</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Alex "Strategy" Meyer</h3>
+            <div className="text-muted-foreground mb-2">Content Strategist</div>
+            <div className="text-sm text-muted-foreground text-center">Plans your content roadmap, aligns with your goals, and keeps your brand on track—24/7.</div>
+          </div>
+          {/* Copywriter */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">✍️</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Priya "Wordsmith" Patel</h3>
+            <div className="text-muted-foreground mb-2">Copywriter</div>
+            <div className="text-sm text-muted-foreground text-center">Crafts engaging posts, emails, and captions in your brand voice—any time, any day.</div>
+          </div>
+          {/* Graphic Designer */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">🎨</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Marco "Visual" Santos</h3>
+            <div className="text-muted-foreground mb-2">Graphic Designer</div>
+            <div className="text-sm text-muted-foreground text-center">Designs scroll-stopping visuals and templates—your creative partner, always on.</div>
+          </div>
+          {/* Social Media Manager */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">📱</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Taylor "Engage" Lee</h3>
+            <div className="text-muted-foreground mb-2">Social Media Manager</div>
+            <div className="text-sm text-muted-foreground text-center">Schedules, posts, and engages with your audience—never misses a beat, never takes a break.</div>
+          </div>
+          {/* SEO Specialist */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">🔍</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Jamal "Search" Nguyen</h3>
+            <div className="text-muted-foreground mb-2">SEO Specialist</div>
+            <div className="text-sm text-muted-foreground text-center">Optimizes your content for discoverability and growth—around the clock.</div>
+          </div>
+          {/* Analytics & Reporting Specialist */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">📊</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Sofia "Metrics" Ruiz</h3>
+            <div className="text-muted-foreground mb-2">Analytics & Reporting</div>
+            <div className="text-sm text-muted-foreground text-center">Delivers insights and recommendations to keep you improving—day and night.</div>
+          </div>
+          {/* Community Manager */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">🤝</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Diego "Connector" Kim</h3>
+            <div className="text-muted-foreground mb-2">Community Manager</div>
+            <div className="text-sm text-muted-foreground text-center">Builds and nurtures your community, responds to feedback, and keeps engagement high—always present.</div>
+          </div>
+          {/* Paid Advertising Specialist */}
+          <div className="p-6 rounded-lg border bg-card flex flex-col items-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+              <span className="text-2xl font-bold text-primary">💸</span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">Elena "AdPro" García</h3>
+            <div className="text-muted-foreground mb-2">Paid Advertising</div>
+            <div className="text-sm text-muted-foreground text-center">Runs and optimizes your ad campaigns for ROI—your 24/7 performance marketer.</div>
           </div>
         </div>
       </section>

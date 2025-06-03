@@ -13,55 +13,57 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
 - `src/app/(auth)/signup/page.tsx` - User registration page with email verification
 - `src/app/(auth)/forgot-password/page.tsx` - Password reset request page
 - `src/app/(auth)/reset-password/page.tsx` - Password reset form page
-- `src/app/dashboard/page.tsx` - Main dashboard landing page (renamed/moved from `src/app/(dashboard)/dashboard/page.tsx`)
-- `src/app/(dashboard)/dashboard/layout.tsx` - Dashboard layout with navigation (Note: This path might be obsolete if route group was removed)
-- `src/app/dashboard/brand-setup/page.tsx` - Brand identity configuration interface (created, uses Sonner for toasts)
-- `src/app/(dashboard)/content/generate/page.tsx` - Content generation interface with AI chat
-- `src/app/(dashboard)/content/review/page.tsx` - Content review and approval interface
-- `src/app/(dashboard)/content/calendar/page.tsx` - Content calendar and scheduling view
-- `src/app/(dashboard)/ideabank/page.tsx` - Ideabank management interface
-- `src/app/(dashboard)/connections/page.tsx` - Social media platform connection management
-- `src/app/(dashboard)/settings/page.tsx` - User settings and preferences
+- `src/app/dashboard/page.tsx` - Main dashboard landing page (Orchestrator AI chat entry, content status, quick actions)
+- `src/app/dashboard/brand-setup/page.tsx` - Brand identity configuration interface (multi-step wizard, onboarding)
+- `src/app/dashboard/content/generate/page.tsx` - Content generation interface with AI chat
+- `src/app/dashboard/content/review/page.tsx` - Content review and approval interface (text, image, video)
+- `src/app/dashboard/content/calendar/page.tsx` - Content calendar and scheduling view (drag-and-drop, scheduled/post view)
+- `src/app/dashboard/ideabank/page.tsx` - Ideabank management interface (text/link capture, Kanban)
+- `src/app/dashboard/connections/page.tsx` - Social media platform connection management (OAuth, status)
+- `src/app/dashboard/settings/page.tsx` - User settings, preferences, and brand identity editing
 - `src/app/api/ai/generate-text/route.ts` - AI text content generation endpoint
 - `src/app/api/ai/generate-image/route.ts` - AI image content generation endpoint
 - `src/app/api/ai/generate-video-script/route.ts` - AI video script generation endpoint
-- `src/app/api/content/feedback/route.ts` - Content feedback and rating submission
+- `src/app/api/content/feedback/route.ts` - Content feedback and rating submission (image feedback loop)
 - `src/app/api/content/regenerate/route.ts` - Content regeneration based on feedback
 - `src/app/api/content/schedule/route.ts` - Content scheduling to social platforms
 - `src/app/api/ideabank/route.ts` - Ideabank CRUD operations
-- `src/app/api/brand-identity/route.ts` - Brand identity management (updated for Supabase client init)
-- `src/app/api/social-connections/route.ts` - Social media platform OAuth flows
-- `src/components/ui/chat-interface.tsx` - Conversational AI chat component
-- `src/components/ui/content-card.tsx` - Content display and action component
-- `src/components/ui/calendar.tsx` - Calendar component for scheduling
-- `src/components/ui/feedback-form.tsx` - Content feedback collection component
-- `src/components/ui/textarea.tsx` - Textarea component for forms (added via shadcn)
-- `src/components/ui/toaster.tsx` - Toaster component for displaying notifications (updated to Sonner in layout, this file might be shadcn specific if not used)
-- `src/components/ui/use-toast.ts` - Hook for triggering toasts (potentially unused if Sonner is primary and this is shadcn specific)
+- `src/app/api/brand-identity/route.ts` - Brand identity management (secure storage/retrieval)
+- `src/app/api/social-connections/route.ts` - Social media platform OAuth flows and token management
+- `src/components/ui/chat-interface.tsx` - Conversational AI chat component (Orchestrator)
+- `src/components/ui/content-card.tsx` - Content display and action component (review, approve, feedback)
+- `src/components/ui/calendar.tsx` - Calendar component for scheduling and drag-and-drop
+- `src/components/ui/feedback-form.tsx` - Content feedback collection component (rating/comments)
+- `src/components/ui/textarea.tsx` - Textarea component for forms (shadcn)
+- `src/components/ui/toaster.tsx` - Toaster component for displaying notifications (Sonner or shadcn)
 - `src/components/dashboard/sidebar.tsx` - Dashboard navigation sidebar
 - `src/components/dashboard/header.tsx` - Dashboard header with user menu
 - `src/components/content/text-post-preview.tsx` - Text post preview component
 - `src/components/content/image-post-preview.tsx` - Image post preview component
 - `src/components/content/video-script-preview.tsx` - Video script preview component
-- `src/components/ideabank/idea-card.tsx` - Individual idea display component
+- `src/components/ideabank/idea-card.tsx` - Individual idea display component (Kanban)
 - `src/components/ideabank/idea-form.tsx` - New idea capture form
-- `src/components/brand/brand-setup-wizard.tsx` - Multi-step brand identity setup
-- `src/components/social/platform-connection.tsx` - Social platform connection status
-- `src/lib/ai/orchestrator.ts` - Main AI orchestrator for content generation
+- `src/components/brand/brand-setup-wizard.tsx` - Multi-step brand identity setup wizard
+- `src/components/social/platform-connection.tsx` - Social platform connection status and management
+- `src/components/ui/status-indicator.tsx` - Visual workflow/status indicator (badges, progress bars)
+- `src/lib/ai/orchestrator.ts` - Main AI orchestrator for content generation and context
 - `src/lib/ai/toolkit-client.ts` - Client for toolkit.hangten.studio API
-- `src/lib/social/platform-clients.ts` - Social media platform API clients
+- `src/lib/social/platform-clients.ts` - Social media platform API clients (posting, scheduling)
 - `src/lib/utils/content-formatter.ts` - Content formatting utilities for different platforms
-- `src/lib/utils/token-tracker.ts` - AI service token usage tracking
-- `src/types/content.ts` - TypeScript types for content models
+- `src/lib/utils/token-tracker.ts` - AI service token usage tracking and billing
+- `src/types/content.ts` - TypeScript types for content models and lifecycle
 - `src/types/brand.ts` - TypeScript types for brand identity
-- `src/types/social.ts` - TypeScript types for social platforms
-- `prisma/schema.prisma` - Database schema definition (updated with hasCompletedOnboarding)
-- `prisma/migrations/` - Database migration files (new migration for onboarding field)
+- `src/types/social.ts` - TypeScript types for social platforms and connections
+- `prisma/schema.prisma` - Database schema definition (users, onboarding, content, teams, etc.)
+- `prisma/migrations/` - Database migration files (onboarding, teams, content lifecycle)
 - `.env.example` - Environment variables template
-- `src/app/privacy/page.tsx` - Privacy Policy page
-- `src/app/terms/page.tsx` - Terms of Service page
+- `src/app/privacy/page.tsx` - Privacy Policy page (legal compliance)
+- `src/app/terms/page.tsx` - Terms of Service page (legal compliance)
 - `src/components/footer.tsx` - Site footer with legal links
-- `src/app/layout.tsx` - Root layout (updated for Sonner Toaster)
+- `src/app/layout.tsx` - Root layout (toaster, accessibility, theme)
+- `README.md` - Project overview and setup instructions
+- `tasks/prd-konmashi-mvp.md` - Product Requirements Document (PRD) for Konmashi MVP
+- `tasks/tasks-prd-konmashi-mvp.md` - Task list for PRD implementation and progress tracking
 
 ### Notes
 
@@ -86,34 +88,54 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 1.7.3 Redirect users with hasCompletedOnboarding=false to the brand setup page (`/dashboard/brand-setup`)
     - [x] 1.7.4 Update hasCompletedOnboarding to true in the database after successful brand setup submission
   - [x] 1.8 Add role-based access control (RBAC) foundation for future agency features
-  - [x] 1.9 Implement session management and auto-refresh tokensnpm runnpm 
+  - [x] 1.9 Implement session management and auto-refresh tokens
   - [x] 1.10 Create legal compliance framework with privacy policy and terms integration
+  - [x] 1.11 Ensure secure storage and retrieval of brand identity elements per tenant
+    - [x] 1.11.1 Store brand identity elements in a dedicated table, associated with the user/tenant
+    - [x] 1.11.2 Enforce access control: only the authenticated user can create, update, or retrieve their brand identity
+    - [x] 1.11.3 (Optional) Encrypt sensitive brand identity fields at rest if required (not required for MVP)
+    - [x] 1.11.4 Implement a secure API endpoint for retrieving brand identity for the logged-in user
+    - [x] 1.11.5 Ensure data returned is suitable for AI content generation services
+    - [x] 1.11.6 Add tests for data isolation, integrity, and access control
+      - [x] 1.11.6.1 Test: Only authenticated user can access their own brand identity (no cross-tenant access)
+      - [x] 1.11.6.2 Test: Data returned matches what was input (integrity)
+      - [x] 1.11.6.3 Test: Unauthenticated requests are denied access to brand identity endpoints
+  - [x] 1.12 Implement accessibility foundation for onboarding and authentication flows (WCAG 2.1 AA aspiration)
+    - [x] 1.12.1 Ensure all form fields have associated labels and ARIA attributes
+    - [x] 1.12.2 Provide keyboard navigation and focus indicators for all interactive elements
+    - [x] 1.12.3 Ensure sufficient color contrast for text and UI elements
+    - [x] 1.12.4 Add screen reader support for onboarding and authentication flows
+    - [x] 1.12.5 Test onboarding and authentication flows with accessibility tools (e.g., axe, Lighthouse)
+    - [x] 1.12.6 Document accessibility improvements and known limitations
 
 - [ ] 2.0 AI Content Generation Core Features  
   - [ ] 2.1 Integrate toolkit.hangten.studio API client with authentication
-  - [ ] 2.2 Build conversational AI orchestrator with context management
-  - [ ] 2.3 Implement text post generation with brand voice integration
-  - [ ] 2.4 Implement AI image generation with caption creation
-  - [ ] 2.5 Implement video script generation with faceless video suggestions
-  - [ ] 2.6 Create content review interface with approve/reject functionality
-  - [ ] 2.7 Build feedback collection system for content iteration
-  - [ ] 2.8 Implement content regeneration based on user feedback
-  - [ ] 2.9 Add platform-specific content optimization (character limits, formats)
-  - [ ] 2.10 Create content versioning system for iteration tracking
-  - [ ] 2.11 Implement token usage tracking and billing integration
+  - [ ] 2.2 Build conversational Orchestrator AI chat interface with context management
+  - [ ] 2.3 Implement text-based social media post generation with brand voice integration
+  - [ ] 2.4 Implement AI image-based post generation with brand style and caption creation
+  - [ ] 2.5 Implement short-form video concept/script generation with faceless video suggestions
+  - [ ] 2.6 Create content review interface for text, image, and video outputs
+  - [ ] 2.7 Build feedback collection system for content iteration (rating/comments for images at minimum)
+  - [ ] 2.8 Implement content regeneration based on user feedback (image feedback loop MVP)
+  - [ ] 2.9 Add platform-specific content optimization and preview (character limits, formats, suggestions)
+  - [ ] 2.10 Create content versioning and iteration tracking system
+  - [ ] 2.11 Implement AI service token usage tracking and billing integration
   - [ ] 2.12 Add content quality scoring and brand alignment metrics
+  - [ ] 2.13 Log all feedback and iteration data for future tenant-specific AI learning (RAG foundation)
 
 - [ ] 3.0 User Experience & Dashboard Development
-  - [ ] 3.1 Create responsive dashboard layout with sidebar navigation
-  - [ ] 3.2 Build main dashboard with content generation status and quick actions
-  - [ ] 3.3 Implement brand identity setup wizard with guided workflow
-  - [ ] 3.4 Create settings page for user preferences and account management
-  - [ ] 3.5 Build notification system for content generation completion
+  - [ ] 3.1 Create responsive dashboard layout with sidebar navigation and header
+  - [ ] 3.2 Build main dashboard/command center with content generation status, quick actions, and Orchestrator AI chat entry
+  - [ ] 3.3 Implement brand identity setup wizard with guided, multi-step workflow and clear instructions/examples
+  - [ ] 3.4 Create settings page for user preferences, account management, and brand identity editing
+  - [ ] 3.5 Build notification system for content generation completion and important events
   - [ ] 3.6 Implement dark/light theme support with user preference storage
-  - [ ] 3.7 Create mobile-responsive interface for idea capture and monitoring
-  - [ ] 3.8 Build search and filtering capabilities across all content
-  - [ ] 3.9 Implement keyboard shortcuts for power users
-  - [ ] 3.10 Create contextual help system and onboarding tooltips
+  - [ ] 3.7 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager)
+  - [ ] 3.8 Remove Paid Ads Specialist persona from dashboard for MVP
+  - [ ] 3.9 Create mobile-responsive interface for idea capture and monitoring workflows
+  - [ ] 3.10 Build search and filtering capabilities across all content and ideas
+  - [ ] 3.11 Implement keyboard shortcuts for power users (optional for MVP)
+  - [ ] 3.12 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
 
 - [ ] 4.0 Social Media Platform Integrations
   - [ ] 4.1 Integrate Instagram Graph API for posting and scheduling
@@ -122,25 +144,29 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [ ] 4.4 Integrate LinkedIn Marketing API for professional content posting
   - [ ] 4.5 Integrate Facebook Graph API for page posting and management
   - [ ] 4.6 Integrate Pinterest API for pin creation and board management
-  - [ ] 4.7 Build OAuth flow management for secure platform connections
-  - [ ] 4.8 Implement token refresh and connection health monitoring
-  - [ ] 4.9 Create platform-specific content formatting and validation
-  - [ ] 4.10 Build retry logic and error handling for failed posts
-  - [ ] 4.11 Implement posting queue and rate limiting compliance
-  - [ ] 4.12 Create connection management interface with status indicators
+  - [ ] 4.7 Build secure OAuth flow management for each supported platform
+  - [ ] 4.8 Implement token storage, refresh, and connection health monitoring per tenant
+  - [ ] 4.9 Create platform-specific content formatting, validation, and compliance checks
+  - [ ] 4.10 Build retry logic and error handling for failed posts and API rate limits
+  - [ ] 4.11 Implement posting queue and rate limiting compliance for all platforms
+  - [ ] 4.12 Create connection management interface with real-time status indicators
+  - [ ] 4.13 Ensure individualized and secure platform connections for each tenant/client
+  - [ ] 4.14 Maintain compliance documentation for all platform APIs
 
 - [ ] 5.0 Content Management & Workflow Systems
-  - [ ] 5.1 Build Ideabank with text and link capture functionality
-  - [ ] 5.2 Implement content lifecycle tracking (draft → review → approved → scheduled → published)
-  - [ ] 5.3 Create content calendar with drag-and-drop scheduling
+  - [ ] 5.1 Build Ideabank with text and link capture, management, and deletion functionality
+  - [ ] 5.2 Implement content lifecycle tracking (Idea → Prompt → Staging → Production → Scheduled → Posted → Analysis)
+  - [ ] 5.3 Create content calendar with drag-and-drop scheduling and scheduled/post view
   - [ ] 5.4 Build content analytics and performance tracking foundation
-  - [ ] 5.5 Implement content categorization and tagging system
+  - [ ] 5.5 Implement content categorization, tagging, and Kanban board views (Ideabank Kanban, Content Lifecycle Kanban)
   - [ ] 5.6 Create bulk content operations (bulk approve, bulk schedule)
   - [ ] 5.7 Build content templates and reusable components
-  - [ ] 5.8 Implement content collaboration features for team workflows
-  - [ ] 5.9 Create automated content suggestions based on performance data
-  - [ ] 5.10 Build content backup and export functionality
-  - [ ] 5.11 Implement content compliance checking for platform policies
-  - [ ] 5.12 Create workflow automation rules and triggers
+  - [ ] 5.8 Implement content collaboration features for team and agency workflows
+  - [ ] 5.9 Create automated content suggestions and workflow automation rules/triggers
+  - [ ] 5.10 Build content backup, export, and compliance checking for platform policies
+  - [ ] 5.11 Implement workflow automation and triggers for content production and scheduling
+  - [ ] 5.12 Create visual workflow/status indicators (e.g., status badges, progress bars, subway map visualization)
 
-// RBAC/team foundation: Added Team, TeamMember, TeamRole, SuperAdmin models and migration in Prisma schema. 
+// RBAC/team foundation: Added Team, TeamMember, TeamRole, SuperAdmin models and migration in Prisma schema.
+
+// Checklist: Always run all tests (e.g., with npx jest) before each release or major deployment to ensure data security and integrity. 

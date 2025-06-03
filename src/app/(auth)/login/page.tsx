@@ -74,7 +74,7 @@ export default function LoginPage() {
               className={errors.email ? 'border-destructive' : ''}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
+              <p className="text-sm text-destructive" role="alert">{errors.email.message}</p>
             )}
           </div>
 
@@ -96,7 +96,7 @@ export default function LoginPage() {
               className={errors.password ? 'border-destructive' : ''}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="text-sm text-destructive" role="alert">{errors.password.message}</p>
             )}
           </div>
 

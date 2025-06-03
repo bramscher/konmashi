@@ -95,6 +95,46 @@ export default function DashboardPage() {
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-8">Welcome to your Konmashi Dashboard</h1>
           
+          {/* Persona Droids Section */}
+          <section className="mb-10">
+            <h2 className="text-2xl font-semibold mb-2">Meet Your AI Marketing Team</h2>
+            <p className="text-muted-foreground mb-6 max-w-2xl">
+              Konmashi is powered by a team of specialized AI personas—each modeled after a key role in a high-performing marketing agency. These agentic personas collaborate to help you strategize, create, analyze, and grow your brand 24/7.
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">🤖</span>
+                <div className="font-bold">Orchestrator</div>
+                <div className="text-xs text-muted-foreground">Team Lead</div>
+              </div>
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">🧠</span>
+                <div className="font-bold">Strategist</div>
+                <div className="text-xs text-muted-foreground">Content Strategy</div>
+              </div>
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">✍️</span>
+                <div className="font-bold">Copywriter</div>
+                <div className="text-xs text-muted-foreground">Writing & Messaging</div>
+              </div>
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">🎨</span>
+                <div className="font-bold">Designer</div>
+                <div className="text-xs text-muted-foreground">Visuals & Branding</div>
+              </div>
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">📊</span>
+                <div className="font-bold">Analyst</div>
+                <div className="text-xs text-muted-foreground">Analytics</div>
+              </div>
+              <div className="bg-card p-4 rounded-lg flex flex-col items-center">
+                <span className="text-3xl mb-2">💬</span>
+                <div className="font-bold">Community Manager</div>
+                <div className="text-xs text-muted-foreground">Engagement</div>
+              </div>
+            </div>
+          </section>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             {/* Placeholder cards for future features */}
             <div className="p-6 rounded-lg border bg-card">

@@ -85,4 +85,31 @@ export async function POST(request: NextRequest) {
     // Add more specific error handling if needed
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
+}
+
+export async function GET(request: NextRequest) {
+  const supabase = createRouteHandlerClient({ cookies });
+
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+    if (sessionError || !session || !session.user) {
+      console.error('Auth error in API:', sessionError);
+      return NextResponse.json({ error: 'Unauthorized: No active session' }, { status: 401 });
+    }
+
+    const userId = session.user.id;
+    const brandIdentity = await prisma.brandIdentity.findUnique({
+      where: { userId },
+    });
+
+    if (!brandIdentity) {
+      return NextResponse.json({ error: 'Brand identity not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ brandIdentity });
+  } catch (error) {
+    console.error('Error in GET /api/brand-identity:', error);
+    return NextResponse.json({ error: 'Internal server error while retrieving brand identity.' }, { status: 500 });
+  }
 } 
