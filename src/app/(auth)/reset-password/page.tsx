@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase';
 
 const ResetPasswordSchema = z.object({
   password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
@@ -24,7 +24,7 @@ type ResetPasswordFormValues = z.infer<typeof ResetPasswordSchema>;
 
 export default function ResetPasswordPage() {
   const router = useRouter();
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

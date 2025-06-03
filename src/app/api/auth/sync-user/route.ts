@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const allCookies = await cookies();
     console.log('All cookies:', Array.from(allCookies));
     // Get the Supabase auth token from the correct cookie name (await cookies() for App Router)
-    let rawToken = (await cookies()).get('sb-ovzistntcsomqddezegq-auth-token')?.value;
+    const rawToken = (await cookies()).get('sb-ovzistntcsomqddezegq-auth-token')?.value;
     console.log('Raw Supabase auth token:', rawToken, 'Type:', typeof rawToken);
     // If the token is a JSON array, parse and use the first element
     let token = rawToken;

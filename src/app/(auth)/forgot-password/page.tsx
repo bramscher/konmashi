@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/client';
+import { createSupabaseClient } from '@/lib/supabase';
 
 const ForgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -19,9 +19,8 @@ const ForgotPasswordSchema = z.object({
 type ForgotPasswordFormValues = z.infer<typeof ForgotPasswordSchema>;
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const supabase = createClient();
+  const supabase = createSupabaseClient();
 
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(ForgotPasswordSchema),

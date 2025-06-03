@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 
 export default function DashboardPage() {
   const auth = useAuth()
-  const { user, prismaUser, hasCompletedOnboarding, loading, signOut } = auth
+  const { user, hasCompletedOnboarding, loading, signOut } = auth
   const router = useRouter()
   const pathname = usePathname()
 

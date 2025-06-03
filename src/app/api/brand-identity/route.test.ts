@@ -1,6 +1,3 @@
-import request from 'supertest';
-import app from '@/app'; // Adjust import as needed for your test setup
-
 describe('Brand Identity API - Access Control', () => {
   it('should only allow the authenticated user to access their own brand identity', async () => {
     // Pseudocode for test setup:

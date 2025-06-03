@@ -31,7 +31,7 @@ export default function SettingsPage() {
       } else {
         setError(data.error || "Failed to create team.");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred.");
     } finally {
       setLoading(false);

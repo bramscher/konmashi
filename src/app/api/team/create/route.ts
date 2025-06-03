@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from '@supabase/auth-helpers-nextjs';
 import { prisma } from '@/lib/prisma';
-import { createServerClient } from '@/lib/supabase/server';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = createServerClient();
+    const supabase = createRouteHandlerClient({ cookies });
     const {
       data: { session },
     } = await supabase.auth.getSession();

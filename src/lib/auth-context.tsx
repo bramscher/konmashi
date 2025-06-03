@@ -2,9 +2,8 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { User as SupabaseUser, Session } from '@supabase/auth-helpers-nextjs'
-import { AuthError } from '@supabase/supabase-js'
-import { createSupabaseClient } from './supabase'
 import { User as PrismaUser } from '@/generated/prisma'
+import { createSupabaseClient } from '@/lib/supabase'
 
 interface AuthContextType {
   user: SupabaseUser | null
@@ -12,10 +11,10 @@ interface AuthContextType {
   prismaUser: PrismaUser | null
   hasCompletedOnboarding: boolean | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error?: AuthError | null }>
-  signUp: (email: string, password: string) => Promise<{ error?: AuthError | null }>
+  signIn: (email: string, password: string) => Promise<{ error?: Error | null }>
+  signUp: (email: string, password: string) => Promise<{ error?: Error | null }>
   signOut: () => Promise<void>
-  resetPassword: (email: string) => Promise<{ error?: AuthError | null }>
+  resetPassword: (email: string) => Promise<{ error?: Error | null }>
   fetchPrismaUser: (userId: string) => Promise<void>
 }
 
@@ -28,9 +27,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   
-  const supabase = createSupabaseClient()
-
   console.log('AuthProvider rendered (should only see this on the client!)');
+
+  const supabase = createSupabaseClient()
 
   const fetchAndSetPrismaUser = useCallback(async (supabaseUserId: string, userEmail?: string) => {
     if (!supabaseUserId) return;
@@ -47,8 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         credentials: 'include',
       });
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error fetching/syncing Prisma user:', errorData.error);
+        console.error('Error fetching/syncing Prisma user:', response.statusText);
         setPrismaUser(null);
         setHasCompletedOnboarding(null);
         return;
@@ -103,7 +101,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []); // <-- Only run once on mount
 
   const signIn = async (email: string, password: string) => {
-    const { error, data } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -111,7 +109,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signUp = async (email: string, password: string) => {
-    const { error, data } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
