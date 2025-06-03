@@ -93,8 +93,8 @@ export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: ke
           [droidKey]: [...newMessages, { role: 'ai', content: typeof data.aiMessage === 'string' ? data.aiMessage : JSON.stringify(data.aiMessage) }],
         }));
       }
-    } catch (err: any) {
-      setError(err.message || 'Network error.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Network error.');
     } finally {
       setLoading(false);
     }

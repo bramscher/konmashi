@@ -12,7 +12,9 @@ export default function DashboardPage() {
   const { user, hasCompletedOnboarding, loading, signOut } = auth
   const router = useRouter()
   const pathname = usePathname()
-  const [selectedDroid, setSelectedDroid] = useState('orchestrator')
+  const [selectedDroid, setSelectedDroid] = useState<
+    'orchestrator' | 'strategist' | 'copywriter' | 'designer' | 'analyst' | 'community'
+  >('orchestrator')
 
   useEffect(() => {
     if (!loading && !user) {

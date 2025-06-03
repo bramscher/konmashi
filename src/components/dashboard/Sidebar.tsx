@@ -1,5 +1,7 @@
 import React from 'react';
 
+type DroidKey = 'orchestrator' | 'strategist' | 'copywriter' | 'designer' | 'analyst' | 'community';
+
 const DROIDS = [
   { key: 'orchestrator', icon: '🤖', name: 'Orchestrator', role: 'Orchestrator' },
   { key: 'strategist', icon: '🧠', name: 'Alex "Strategy" Meyer', role: 'Content Strategist' },
@@ -19,8 +21,8 @@ const navLinks = [
 ];
 
 export default function Sidebar({ selectedPersona, onSelectPersona }: {
-  selectedPersona: string;
-  onSelectPersona: (persona: string) => void;
+  selectedPersona: DroidKey;
+  onSelectPersona: (persona: DroidKey) => void;
 }) {
   return (
     <aside className="h-full w-64 bg-background border-r flex flex-col py-6 px-4">
@@ -31,7 +33,7 @@ export default function Sidebar({ selectedPersona, onSelectPersona }: {
             <button
               key={droid.key}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${selectedPersona === droid.key ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'}`}
-              onClick={() => onSelectPersona(droid.key)}
+              onClick={() => onSelectPersona(droid.key as DroidKey)}
               aria-current={selectedPersona === droid.key ? 'page' : undefined}
             >
               <span className="text-2xl">{droid.icon}</span>
