@@ -2,7 +2,7 @@
 
 ## Introduction / Problem Statement
 
-Konmashi is envisioned as an intelligent SaaS platform designed to revolutionize content marketing by streamlining and amplifying the processes of ideation, production, and multi-channel publishing.
+Konmashi is envisioned as an intelligent SaaS platform designed to revolutionize content marketing by streamlining and amplifying the processes of ideation, production, and multi-channel publishing. At its core, Konmashi leverages a set of agentic personas—called **Kroids**—that act as specialized AI team members, each with a unique role in the content creation and management process. These Kroids are central to both the product concept and the user experience, appearing as selectable personas in the UI (sidebar, chat, etc.) and driving the platform's agentic workflows.
 
 The core problems Konmashi aims to solve are:
 
@@ -12,14 +12,14 @@ The core problems Konmashi aims to solve are:
 * The struggle to keep up with content demands, identify effective content strategies, and continuously learn from performance data without needing to hire a dedicated expert team to do all this work.
 * The desire to leverage advanced AI capabilities for content generation (text, image, video) in an integrated and user-friendly way that feels empowering, rather than like managing a disparate set of tools.
 
-Konmashi is needed to provide a unified, AI-powered "Content Machine" – effectively serving as an AI content management team – that not only automates and assists in content creation but also learns and adapts to each tenant's unique brand, empowering them with "superhuman capabilities" to produce high-quality, strategically-aligned content efficiently and effectively.
+Konmashi is needed to provide a unified, AI-powered "Content Machine"—effectively serving as an AI content management team—built around the Kroids. The platform not only automates and assists in content creation but also learns and adapts to each tenant's unique brand, empowering them with "superhuman capabilities" to produce high-quality, strategically-aligned content efficiently and effectively.
 
 ## Vision & Goals
 
-* **Vision:** To empower every creator, business, and agency to effortlessly master their digital presence, by providing an intelligent and adaptive AI partner that transforms content marketing from a complex chore into a joyful, 'superhuman' expression of their unique brand.
+* **Vision:** To empower every creator, business, and agency to effortlessly master their digital presence, by providing an intelligent and adaptive AI partner that transforms content marketing from a complex chore into a joyful, 'superhuman' expression of their unique brand. This vision is realized through the Kroids, who act as the user's virtual content team.
 * **Primary Goals (for the MVP):**
     1.  **Core Content Generation & Platform Output:** Enable users to generate at least three distinct types of on-brand, short-form content (e.g., a text-based tweet, an image with a caption for Instagram, a short text-to-video reel concept/script) using a simplified brand input process, and see it prepared for at least two major social media platforms.
-    2.  **Simplified Ideation-to-Task Workflow:** Implement a basic version of the chat-based Orchestrator interface allowing users to initiate content generation requests (e.g., "Konmashi, create a post about X for Twitter"), and a functional Ideabank for capturing at least text and link-based ideas.
+    2.  **Simplified Ideation-to-Task Workflow:** Implement a basic version of the chat-based Orchestrator interface (a Kroid) allowing users to initiate content generation requests (e.g., "Konmashi, create a post about X for Twitter"), and a functional Ideabank for capturing at least text and link-based ideas.
     3.  **Basic Iterative Feedback & Learning:** Demonstrate a visible feedback loop for at least one AI-generated content type (e.g., image generation), where user feedback is used to refine the AI's prompt and generate an improved output, with this interaction logged as a foundational step towards the tenant-specific RAG.
     4.  **Initial Usability & Value Validation:** Achieve a satisfactory usability rating (e.g., a target score on a standard usability scale like SUS, or positive qualitative feedback) from a small cohort of initial beta users for the core MVP workflow (idea -> generation -> simple refinement -> platform-ready output).
 * **Success Metrics (Initial Ideas):**
@@ -43,25 +43,79 @@ Konmashi is needed to provide a unified, AI-powered "Content Machine" – effect
 * **Small to Medium-Sized Businesses (SMBs):** Companies that want to leverage content marketing for growth but need an efficient and scalable solution to manage their online presence without significant overhead. (This also aligns with "designers, graphics folks and small business owners" mentioned by the user).
 * **Digital Agencies:** Firms managing social media and content marketing for multiple clients, who would benefit from a unified system to streamline workflows, ensure brand consistency per client, and track performance across different accounts.
 * **Growth Marketers:** Professionals focused on leveraging data-driven automation and content to maximize reach, engagement, and conversions.
+* **Teams:** All users are organized into Teams, with team-based onboarding, data isolation, and role-based access control (RBAC) as foundational features. Each team can have multiple members, with roles such as ADMIN and MEMBER, and all content, brand identity, and data are scoped to the team.
 
 ## Key Features / Scope (High-Level Ideas for MVP)
 
-1.  **AI-Powered Short-Form Content Generation:**
+1.  **Kroids (Agentic Personas):**
+    * The platform is built around a set of Kroids—specialized AI personas representing key roles in a content marketing team (e.g., Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager, etc.).
+    * Users interact with Kroids via the sidebar and chat interface, switching between personas to access different expertise and workflows.
+    * Each Kroid has a unique personality, prompt, and function, and can be extended in the future.
+    * See `# TeamPersonaStarter: Konmashi.md` for full persona details.
+2.  **Team-Based Onboarding & Data Isolation:**
+    * All users join or create a Team during onboarding.
+    * All data (brand identity, content, ideas, etc.) is isolated per team, with strict RBAC enforced.
+    * Team Admins can invite, remove, and manage members, and assign roles.
+3.  **License Management & Stripe Integration (Planned):**
+    * Teams have a license count (number of seats/members allowed), enforced in the UI and backend.
+    * Admins can upgrade licenses (increase seat count) via a Stripe-powered checkout (coming soon).
+    * License usage and upgrades are visible in the Team Admin dashboard.
+4.  **AI-Powered Short-Form Content Generation:**
     * Ability to generate text-based posts (e.g., for Twitter, LinkedIn), image-based posts (e.g., for Instagram, Facebook) with AI-generated images and captions, and simple short-form video concepts/scripts (e.g., for TikTok, Reels, perhaps as "faceless videos" with stock footage and AI voiceover for MVP).
     * Content optimized for at least 2-3 selected social media platforms.
-2.  **Simplified Brand Identity Input:**
+5.  **Simplified Brand Identity Input:**
     * A guided process (e.g., an initial interaction with an "AI Creative Director" persona) for tenants to define core brand elements (e.g., voice, tone, key themes) that inform AI content generation.
-3.  **Conversational Orchestrator Interface:**
-    * A primary chat-based interface with the "Orchestrator" AI for tenants to make simple content requests (e.g., "Konmashi, write a post about X for platform Y").
-4.  **Basic Ideabank & Capture:**
+6.  **Conversational Orchestrator Interface:**
+    * A primary chat-based interface with the "Orchestrator" Kroid for tenants to make simple content requests (e.g., "Konmashi, write a post about X for platform Y").
+7.  **Basic Ideabank & Capture:**
     * Functionality for tenants to easily capture and store text-based ideas and web links (e.g., inspirational articles, competitor posts) for later reference.
-5.  **Iterative Content Feedback Loop (for one content type):**
+8.  **Iterative Content Feedback Loop (for one content type):**
     * A system for tenants to provide feedback (e.g., rating) on at least one type of AI-generated content (e.g., images), with that feedback leading to AI prompt refinement and an improved output. This will begin to build data for future tenant-specific learning (RAG foundation).
-6.  **Simple Content Scheduling & Overview:**
+9.  **Simple Content Scheduling & Overview:**
     * Basic capability to schedule generated and approved content for posting on connected platforms.
     * A simple calendar view to see scheduled items.
-7.  **Basic Task/Workflow Progress Indication:**
-    * A clear, simplified way for tenants to see the status of their active content requests (e.g., "Script being generated," "Image ready for review"). This might be a precursor to the full "subway map" or detailed task list.
+10.  **Basic Task/Workflow Progress Indication:**
+    * A clear, simplified way for tenants to see the status of their active content requests (e.g., "Script being generated," "Image ready for review").
+
+## The Kroids: Core Agentic Personas
+
+Konmashi's Kroids are the heart of the platform's agentic model. Each Kroid represents a specialized role in a high-performing content team. For MVP, the following Kroids are included:
+
+- **Orchestrator** (AI project manager, chat interface lead)
+- **Strategist** (content strategy, planning)
+- **Copywriter** (text/copy generation)
+- **Designer** (visuals, images, branding)
+- **Analyst** (performance, analytics)
+- **Community Manager** (engagement, feedback)
+
+Each Kroid is accessible via the sidebar and chat, and users can switch between them to access different workflows and expertise. The Kroids' personalities, prompts, and functions are detailed in `# TeamPersonaStarter: Konmashi.md`.
+
+## Team Structure & RBAC
+
+- All users are part of a Team, with team-based onboarding and data isolation.
+- Teams have Admins and Members, with RBAC enforced for all actions (e.g., only Admins can invite/remove members, upgrade licenses, etc.).
+- All content, brand identity, and data are scoped to the team.
+- License count is enforced per team, with planned Stripe integration for upgrades.
+
+## License Management & Stripe Integration (Planned)
+
+- Teams have a license count (number of seats/members allowed), visible in the Team Admin dashboard.
+- When the license limit is reached, inviting new members is disabled until more licenses are purchased.
+- Admins can upgrade licenses via a Stripe-powered checkout (coming soon).
+- License usage and upgrades are visible in the Team Admin dashboard.
+
+## Brand Management & Onboarding (Update)
+
+- Teams and agencies can now manage multiple brands/clients under a single team.
+- The new Manage Brands dashboard (`/dashboard/brands`) provides a unified interface to add, edit, and manage all brands and their identities.
+- Brand Identity setup is integrated directly into the Manage Brands page for seamless onboarding and editing.
+- Onboarding now redirects users to Manage Brands if any brands exist, ensuring a single, modern entry point for all brand-related actions.
+- This approach supports agencies and multi-brand organizations, as well as solo users managing their own brands.
+
+## Reference
+
+- See `# TeamPersonaStarter: Konmashi.md` for full Kroid/persona details and prompt examples.
+- See the PRD for detailed requirements and technical assumptions.
 
 ## Post MVP Features / Scope and Ideas
 

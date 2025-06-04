@@ -64,6 +64,8 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
 - `README.md` - Project overview and setup instructions
 - `tasks/prd-konmashi-mvp.md` - Product Requirements Document (PRD) for Konmashi MVP
 - `tasks/tasks-prd-konmashi-mvp.md` - Task list for PRD implementation and progress tracking
+- `src/app/api/team/members/route.ts` - API route for listing, updating, and removing team members (role change, removal)
+- `src/app/dashboard/team-admin/page.tsx` - Team Admin UI: now supports role change and member removal
 
 ### Notes
 
@@ -87,7 +89,7 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 1.7.2 Implement logic to check hasCompletedOnboarding after login/signup
     - [x] 1.7.3 Redirect users with hasCompletedOnboarding=false to the brand setup page (`/dashboard/brand-setup`)
     - [x] 1.7.4 Update hasCompletedOnboarding to true in the database after successful brand setup submission
-    - [ ] 1.7.5 Onboarding and brand setup now create/edit brand identity for the current Team (not just user)
+    - [x] 1.7.5 Onboarding and brand setup now create/edit brand identity for the current Team (not just user) (COMPLETE)
   - [x] 1.8 Add role-based access control (RBAC) foundation for future agency features
   - [x] 1.9 Implement session management and auto-refresh tokens
   - [x] 1.10 Create legal compliance framework with privacy policy and terms integration
@@ -141,6 +143,27 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [ ] 1.17.4 Test: Data returned by APIs is always filtered by teamId
     - [ ] 1.17.5 Test: UI does not show admin features to non-admins
     - [ ] 1.17.6 Test: Multi-team membership works as expected (switching, isolation)
+- [x] 1.18 Implement Team Admin Management UI & Logic (SCAFFOLDED, BASIC INVITE/EDIT IN PLACE)
+  - [x] 1.18.1 Create admin dashboard section for managing team members
+  - [x] 1.18.2 Allow admins to invite new members (by email)
+  - [x] 1.18.3 Display current team members, roles, and license usage (IN PROGRESS)
+  - [x] 1.18.4 Allow admins to change member roles (e.g., promote/demote to ADMIN) (DONE)
+  - [x] 1.18.5 Enforce license count: prevent adding more members than licenses, and allow license upgrades (NEXT)
+  - [x] 1.18.6 (Optional) Remove or deactivate team members (DONE)
+  - [ ] 1.18.7 Add tests for team member management, RBAC, and license enforcement
+- [x] 1.19 Implement User Settings Section (SCAFFOLDED, BASIC INFO & SIGN OUT IN PLACE)
+  - [x] 1.19.1 Create user settings page (profile, password, preferences)
+  - [x] 1.19.2 Display team memberships and roles
+  - [x] 1.19.3 Add sign out button to user menu/settings
+  - [ ] 1.19.4 Add tests for user settings and sign out
+- [ ] 1.20 Stripe Subscription & License Management Integration
+  - [ ] 1.20.1 Set up Stripe products, prices, and plans for SaaS subscriptions
+  - [ ] 1.20.2 Implement core subscription logic (subscribe, upgrade, downgrade, cancel)
+  - [ ] 1.20.3 Add Stripe webhook handling to update DB on payment/subscription events
+  - [ ] 1.20.4 Connect subscription tiers/quantities to license count in DB
+  - [ ] 1.20.5 Integrate "Upgrade Licenses" UI to trigger Stripe Checkout/Billing Portal
+  - [ ] 1.20.6 On webhook event, update license count and unlock more seats
+  - [ ] 1.20.7 Add tests for subscription and license management flows
 
 - [ ] 2.0 AI Content Generation Core Features  
   - [x] 2.1 Integrate toolkit.hangten.studio API client with authentication
@@ -154,7 +177,7 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [ ] 2.2.7 (Optional) Persist chat history (localStorage or DB)
     - [ ] 2.2.8 Add tests for chat API and UI
     - [x] 2.2.9 Accessibility and UX review (keyboard, ARIA, color contrast, focus)
-    - [x] 2.2.10 Sidebar and dashboard use 'Droid' terminology and show persona name and role
+    - [x] 2.2.10 Sidebar and dashboard use 'Droid' terminology and show persona name and role (now 'Kroids')
     - [x] 2.2.11 Each droid has a unique chat history and greeting
     - [x] 2.2.12 System prompt (brain prompt) is editable and only shown when editing
     - [x] 2.2.13 Chat is functional for all droids and updates correctly when switching
@@ -171,13 +194,13 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [ ] 2.13 Log all feedback and iteration data for future tenant-specific AI learning (RAG foundation)
 
 - [ ] 3.0 User Experience & Dashboard Development
-  - [ ] 3.1 Create responsive dashboard layout with sidebar navigation and header
-  - [ ] 3.2 Build main dashboard/command center with content generation status, quick actions, and Orchestrator AI chat entry
-  - [ ] 3.3 Implement brand identity setup wizard with guided, multi-step workflow and clear instructions/examples
-  - [ ] 3.4 Create settings page for user preferences, account management, and brand identity editing
+  - [x] 3.1 Create responsive dashboard layout with sidebar navigation and header (MODERNIZED, KROIDS, LOGO, ETC.)
+  - [x] 3.2 Build main dashboard/command center with content generation status, quick actions, and Orchestrator AI chat entry (WELCOME MESSAGE IS DYNAMIC, PERSONALIZED)
+  - [x] 3.3 Implement brand identity setup wizard with guided, multi-step workflow and clear instructions/examples (SUPPORTS EDITING, SHOWS PREVIOUS ENTRY, MANIFESTO FIELD ADDED)
+  - [x] 3.4 Create settings page for user preferences, account management, and brand identity editing (BASIC USER SETTINGS, TEAM ADMIN, AND BRAND IDENTITY EDITING IN PLACE)
   - [ ] 3.5 Build notification system for content generation completion and important events
   - [ ] 3.6 Implement dark/light theme support with user preference storage
-  - [ ] 3.7 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager)
+  - [x] 3.7 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager) (RENAMED KROIDS, ICON ROW, SWITCHING WORKS)
   - [ ] 3.8 Remove Paid Ads Specialist persona from dashboard for MVP
   - [ ] 3.9 Create mobile-responsive interface for idea capture and monitoring workflows
   - [ ] 3.10 Build search and filtering capabilities across all content and ideas
@@ -213,6 +236,12 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [ ] 5.10 Build content backup, export, and compliance checking for platform policies
   - [ ] 5.11 Implement workflow automation and triggers for content production and scheduling
   - [ ] 5.12 Create visual workflow/status indicators (e.g., status badges, progress bars, subway map visualization)
+
+- [x] Unify brand setup and management in Manage Brands dashboard (`/dashboard/brands`)
+  - [x] Inline add/edit brand
+  - [x] Inline brand identity setup/edit
+  - [x] Onboarding redirects to Manage Brands if brands exist
+  - [x] Deprecated separate Add Brand and Brand Setup pages
 
 // RBAC/team foundation: Added Team, TeamMember, TeamRole, SuperAdmin models and migration in Prisma schema.
 

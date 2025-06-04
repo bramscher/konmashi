@@ -1,79 +1,43 @@
 "use client";
 
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { useAuth } from '@/lib/auth-context';
 
-export default function SettingsPage() {
-  const [name, setName] = useState("");
-  const [licenseCount, setLicenseCount] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+export default function UserSettingsPage() {
+  const { user, prismaUser, signOut, loading } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage(null);
-    setError(null);
-    try {
-      const res = await fetch("/api/team/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, licenseCount }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage(`Team '${data.team.name}' created!`);
-        setName("");
-        setLicenseCount(1);
-      } else {
-        setError(data.error || "Failed to create team.");
-      }
-    } catch {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 text-center">
-      <div className="bg-card p-8 rounded-lg shadow-xl max-w-md w-full">
-        <h1 className="text-4xl font-bold text-primary mb-4">Settings</h1>
-        <h2 className="text-2xl font-semibold mb-4">Create a Team</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="text-left">
-            <Label htmlFor="team-name">Team Name</Label>
-            <Input
-              id="team-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Acme Corp"
-              required
-              className="mt-1"
-            />
-          </div>
-          <div className="text-left">
-            <Label htmlFor="license-count">Number of Licenses</Label>
-            <Input
-              id="license-count"
-              type="number"
-              min={1}
-              value={licenseCount}
-              onChange={(e) => setLicenseCount(Number(e.target.value))}
-              required
-              className="mt-1"
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? "Creating..." : "Create Team"}
-          </Button>
-        </form>
-        {message && <div className="mt-4 text-green-600">{message}</div>}
-        {error && <div className="mt-4 text-red-600">{error}</div>}
+    <div className="max-w-2xl mx-auto p-8">
+      <h1 className="text-2xl font-bold mb-6">User Settings</h1>
+      <div className="bg-white dark:bg-gray-900 rounded shadow p-6 mb-8">
+        <h2 className="text-lg font-semibold mb-2">Profile</h2>
+        <p><strong>Email:</strong> {user?.email}</p>
+        {/* Placeholder for profile editing */}
+        <p className="text-gray-500 mt-2">Profile editing coming soon.</p>
       </div>
+      <div className="bg-white dark:bg-gray-900 rounded shadow p-6 mb-8">
+        <h2 className="text-lg font-semibold mb-2">Team Memberships</h2>
+        {Array.isArray((prismaUser as any)?.teamMemberships) && (prismaUser as any).teamMemberships.length > 0 ? (
+          <ul className="list-disc pl-6">
+            {(prismaUser as any).teamMemberships.map((m: any) => (
+              <li key={m.id}>
+                <span className="font-medium">Team:</span> {m.team.name} <span className="ml-2">(<span className="font-medium">ID:</span> {m.team.id}, <span className="font-medium">Role:</span> {m.role})</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500">No team memberships found.</p>
+        )}
+      </div>
+      <button
+        onClick={signOut}
+        className="bg-red-600 text-white rounded px-4 py-2 mt-4 hover:bg-red-700"
+      >
+        Sign Out
+      </button>
     </div>
   );
 }

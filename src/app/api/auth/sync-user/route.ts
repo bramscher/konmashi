@@ -75,6 +75,18 @@ export async function POST(request: NextRequest) {
         createdAt: true,
         updatedAt: true,
         hasCompletedOnboarding: true,
+        teamMemberships: {
+          select: {
+            id: true,
+            role: true,
+            team: {
+              select: {
+                id: true,
+                name: true,
+              }
+            }
+          }
+        }
         // Add other fields from Prisma User model if needed in authContext.prismaUser
       }
     })

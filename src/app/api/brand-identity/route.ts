@@ -11,6 +11,8 @@ const brandIdentityApiSchema = z.object({
   industry: z.string().min(1).max(100),
   voiceDescriptors: z.array(z.string()).min(1), // Expecting an array here
   targetAudience: z.string().min(1).max(500),
+  brandManifesto: z.string().max(4000).optional(), // Updated to 4000 chars
+  brandId: z.string().min(1), // <-- Added brandId
   // userId is implicitly from the authenticated session, not from the body usually for security
   // but if BrandSetupPage sends it, we might need to align or decide.
   // For now, let's assume userId is derived from session.
@@ -43,7 +45,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid input', details: validationResult.error.flatten() }, { status: 400 });
     }
 
-    const { brandName, industry, voiceDescriptors, targetAudience } = validationResult.data;
+    const { brandName, industry, voiceDescriptors, targetAudience, brandManifesto, brandId } = validationResult.data;
 
     // Use a Prisma transaction to ensure both operations succeed or fail together
     const result = await prisma.$transaction(async (tx) => {
@@ -55,7 +57,9 @@ export async function POST(request: NextRequest) {
           industry,
           voiceDescriptors,
           targetAudience,
+          brandManifesto,
           teamId,
+          brandId,
           updatedAt: new Date(),
         },
         create: {
@@ -64,7 +68,9 @@ export async function POST(request: NextRequest) {
           industry,
           voiceDescriptors,
           targetAudience,
+          brandManifesto,
           teamId,
+          brandId,
         },
       });
 

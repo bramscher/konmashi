@@ -3,18 +3,28 @@
 import { useAuth } from '@/lib/auth-context'
 import { Button } from '@/components/ui/button'
 import { useRouter, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Sidebar from '@/components/dashboard/Sidebar'
 import DroidChat from '@/components/ui/PersonaChat'
+import { KroidContext } from './layout'
+
+const DEFAULT_DROIDS = {
+  orchestrator: {},
+  strategist: {},
+  copywriter: {},
+  designer: {},
+  analyst: {},
+  community: {},
+};
+
+type DroidKey = keyof typeof DEFAULT_DROIDS;
 
 export default function DashboardPage() {
   const auth = useAuth()
-  const { user, hasCompletedOnboarding, loading, signOut } = auth
+  const { user, prismaUser, hasCompletedOnboarding, loading, signOut } = auth
   const router = useRouter()
   const pathname = usePathname()
-  const [selectedDroid, setSelectedDroid] = useState<
-    'orchestrator' | 'strategist' | 'copywriter' | 'designer' | 'analyst' | 'community'
-  >('orchestrator')
+  const { selectedDroid, setSelectedDroid } = useContext(KroidContext)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -35,6 +45,21 @@ export default function DashboardPage() {
   useEffect(() => {
     console.log('DashboardPage useEffect fired. Auth context:', auth);
   }, [auth]);
+
+  // Welcome message logic
+  function getGreeting() {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Morning';
+    if (hour < 18) return 'Afternoon';
+    return 'Evening';
+  }
+  function capitalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  const greeting = getGreeting();
+  const userNameRaw = prismaUser?.email?.split('@')[0] || user?.email?.split('@')[0] || 'User';
+  const userName = capitalize(userNameRaw);
+  const teamName = (prismaUser as any)?.teamMemberships?.[0]?.team?.name || 'your team';
 
   if (loading && !user) { // Show loading only if user is not yet available (initial load)
     return (
@@ -74,26 +99,23 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Sidebar */}
-      <Sidebar selectedPersona={selectedDroid} onSelectPersona={setSelectedDroid} />
-      {/* Main content */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        <h1 className="text-3xl font-bold mb-8">Welcome to your Konmashi Dashboard</h1>
-        {/* Two-column layout: Chat (left), Canvas (right) */}
-        <section className="mb-10 flex flex-col md:flex-row gap-6 h-[70vh]">
-          {/* Left: Chat or Persona Widget */}
-          <div className="flex-1 md:w-1/2 h-full flex flex-col">
-            {selectedDroid && <DroidChat droidKey={selectedDroid} />}
-          </div>
-          {/* Right: Canvas */}
-          <div className="flex-1 md:w-1/2 h-full bg-muted rounded-lg flex flex-col items-center justify-center">
-            <h2 className="text-xl font-semibold mb-2">Canvas Area</h2>
-            <p className="text-muted-foreground text-center max-w-xs">This area will display outputs, previews, and context for the selected persona. (To be flushed out.)</p>
-          </div>
-        </section>
-        {/* Existing dashboard content can go here, or be moved into persona widgets as needed */}
-      </main>
-    </div>
+    <>
+      <h1 className="text-2xl font-bold mb-2">
+        {greeting}, {userName} <span className="text-primary font-bold">@</span> <span className="text-muted-foreground">{teamName}</span>, what do you want to do today?
+      </h1>
+      {/* Two-column layout: Chat (left), Canvas (right) */}
+      <section className="mb-10 flex flex-col md:flex-row gap-6 h-[70vh]">
+        {/* Left: Chat or Persona Widget */}
+        <div className="flex-1 md:w-1/2 h-full flex flex-col">
+          {selectedDroid && <DroidChat droidKey={selectedDroid} />}
+        </div>
+        {/* Right: Canvas */}
+        <div className="flex-1 md:w-1/2 h-full bg-muted rounded-lg flex flex-col items-center justify-center">
+          <h2 className="text-xl font-semibold mb-2">Canvas Area</h2>
+          <p className="text-muted-foreground text-center max-w-xs">This area will display outputs, previews, and context for the selected persona. (To be flushed out.)</p>
+        </div>
+      </section>
+      {/* Existing dashboard content can go here, or be moved into persona widgets as needed */}
+    </>
   )
 } 

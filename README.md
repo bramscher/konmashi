@@ -1,13 +1,42 @@
 # Konmashi - AI-Powered Content Marketing Platform
 
-Konmashi is an intelligent SaaS platform designed to revolutionize content marketing by streamlining and amplifying the processes of ideation, production, and multi-channel publishing.
+Konmashi is an intelligent SaaS platform designed to revolutionize content marketing by streamlining and amplifying the processes of ideation, production, and multi-channel publishing. It now supports multi-brand management, allowing each team to manage multiple brands/clients, each with its own brand identity, social connections, and content.
 
-## 🎯 Current Status (as of recent updates)
+## 🛡️ Admin Roles & Permissions
 
-- **Phase 1 (Foundation):** Completed. This includes Prisma schema setup, legal pages (Privacy Policy & Terms of Service), landing page, and initial project configuration.
-- **Phase 2 (Authentication):** Completed. Supabase authentication (client/server) is implemented, including user sync with Prisma, login/signup pages, and auth context.
-- **User Onboarding (Task 1.7):** Completed. Users are now guided through a brand identity setup after their first login. `hasCompletedOnboarding` flag is managed and directs user flow.
-- **Next Steps:** Focus will shift towards core dashboard development (enhancing `src/app/dashboard/page.tsx` and related features) and AI service integrations as per the development plan.
+Konmashi supports two levels of admin:
+
+- **Team Admin (Tenant-Level Admin):**
+  - Scope: Administers a single Team (tenant/company/client) within the platform.
+  - Role: Has the `ADMIN` role in the `TeamMember` model for a specific team.
+  - Permissions: Can manage team members, brand identity, content, social connections, and other team-specific settings and workflows. Rights are limited to the team(s) where they have the `ADMIN` role.
+
+- **SuperAdmin (Platform-Level Admin):**
+  - Scope: Administers the entire Konmashi SaaS platform.
+  - Role: Is listed in the `SuperAdmin` model (separate table/entity).
+  - Permissions: Can manage all tenants, billing, platform-wide settings, user accounts, and perform actions that affect the whole SaaS instance (e.g., upgrades, compliance, support, etc.). This is a global role, not tied to any single team.
+
+## 🎯 Current Status & Features (as of recent updates)
+
+- **Phase 1 (Foundation):** Completed. Prisma schema setup, legal pages, landing page, and initial project configuration.
+- **Phase 2 (Authentication):** Completed. Supabase authentication, user sync with Prisma, login/signup pages, and auth context.
+- **User Onboarding:** Completed. Users are guided through a brand identity setup after first login. `hasCompletedOnboarding` flag is managed and directs user flow.
+- **Team & RBAC Foundation:**
+  - Team, TeamMember, TeamRole, and SuperAdmin models implemented in Prisma schema.
+  - Multi-tenant architecture: All content, brand identity, ideabank, and social connections are scoped to the Team.
+  - Role-based access control (RBAC) enforced per Team.
+  - Users can be members of multiple Teams.
+- **TeamId Enforcement:** All tenant-specific models and API endpoints require and filter by `teamId` for strict data isolation.
+- **Team Admin Management UI (Planned/In Progress):**
+  - Admin dashboard section for managing team members, roles, and licenses.
+  - Invite new members, change roles, enforce license count, and remove/deactivate members.
+  - License usage display and upgrade options.
+- **AI-Powered Content Generation:** Generate text posts, images, and video scripts tailored to your brand.
+- **Multi-Platform Publishing:** Connect to Instagram, TikTok, YouTube, LinkedIn, Facebook & Pinterest.
+- **Smart Scheduling:** Schedule content across multiple platforms with optimized timing.
+- **Brand Intelligence:** AI learns your brand voice and maintains consistency.
+- **Ideabank & Strategy:** Capture inspiration and manage your content pipeline.
+- **Performance Insights:** Track performance and improve your content strategy.
 
 ## 🚀 Features
 
@@ -209,3 +238,28 @@ For support and questions:
 - Email: support@konmashi.com
 - Documentation: [Add docs URL]
 - Issues: [GitHub Issues URL]
+
+## Overview
+
+Konmashi is an AI-powered content marketing platform for teams, agencies, and solo creators. It now supports multi-brand management, allowing each team to manage multiple brands/clients, each with its own brand identity, social connections, and content.
+
+## Key Features
+- **Team-based onboarding and RBAC**
+- **Multi-brand support:** Manage multiple brands per team
+- **Unified Brand Management:** `/dashboard/brands` lets you add, edit, and manage all brands and their identities in one place
+- **Integrated Brand Identity:** Set up or edit brand identity inline for each brand
+- **Onboarding:** New users are redirected to Manage Brands if any brands exist; otherwise, prompted to create their first brand
+- **Persona-driven (Kroids) chat and workflows**
+
+## Getting Started
+- Sign up and complete onboarding
+- Use the sidebar to access "Manage Brands" and add your first brand
+- Set up brand identity for each brand inline
+- Use Kroids to generate, schedule, and analyze content for each brand
+
+## For Agencies
+- Easily manage multiple client brands under one team
+- Assign team members to specific brands (per-brand access control)
+
+## More
+See the Project Brief and PRD for full details.

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
@@ -21,6 +21,7 @@ type LoginFormData = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
+  const [rememberMe, setRememberMe] = useState(true)
   const { signIn } = useAuth()
   const router = useRouter()
 
@@ -41,6 +42,12 @@ export default function LoginPage() {
         toast.error(error.message)
       } else {
         toast.success('Welcome back!')
+        if (!rememberMe) {
+          // Remove session on window close (simulate session-only)
+          window.addEventListener('beforeunload', () => {
+            localStorage.setItem('konmashi-clear-session', '1')
+          })
+        }
         router.push('/dashboard')
       }
     } catch (error) {
@@ -49,6 +56,19 @@ export default function LoginPage() {
       setIsLoading(false)
     }
   }
+
+  // On mount, if session should be cleared, sign out
+  useEffect(() => {
+    if (typeof window !== 'undefined' && localStorage.getItem('konmashi-clear-session')) {
+      localStorage.removeItem('konmashi-clear-session')
+      // sign out on reload (best effort)
+      if (typeof window !== 'undefined') {
+        import('@/lib/auth-context').then(({ useAuth }) => {
+          useAuth().signOut()
+        })
+      }
+    }
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 px-4">
@@ -98,6 +118,17 @@ export default function LoginPage() {
             {errors.password && (
               <p className="text-sm text-destructive" role="alert">{errors.password.message}</p>
             )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              id="rememberMe"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={e => setRememberMe(e.target.checked)}
+              className="accent-primary"
+            />
+            <Label htmlFor="rememberMe">Remember Me</Label>
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>

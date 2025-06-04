@@ -20,6 +20,7 @@ model User {
   socialConnections      SocialConnection[]
   superAdmin             SuperAdmin?
   teamMemberships        TeamMember[]
+  brandMemberships       BrandMembership[]
 
   @@map("users")
 }
@@ -31,11 +32,14 @@ model BrandIdentity {
   industry         String?
   voiceDescriptors String[]
   targetAudience   String?
+  brandManifesto   String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   users            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId           String
   Team             Team     @relation(fields: [teamId], references: [id])
+  brandId          String?
+  Brand            Brand?   @relation(fields: [brandId], references: [id])
 
   @@map("brand_identities")
 }
@@ -51,6 +55,8 @@ model IdeabankEntry {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId    String
   Team      Team     @relation(fields: [teamId], references: [id])
+  brandId   String?
+  Brand     Brand?   @relation(fields: [brandId], references: [id])
 
   @@map("ideabank_entries")
 }
@@ -68,6 +74,8 @@ model ContentRequest {
   generatedContent GeneratedContent[]
   teamId           String
   Team             Team     @relation(fields: [teamId], references: [id])
+  brandId          String?
+  Brand            Brand?   @relation(fields: [brandId], references: [id])
 
   @@map("content_requests")
 }
@@ -88,6 +96,8 @@ model GeneratedContent {
   scheduledPosts ScheduledPost[]
   teamId         String
   Team           Team     @relation(fields: [teamId], references: [id])
+  brandId        String?
+  Brand          Brand?   @relation(fields: [brandId], references: [id])
 
   @@map("generated_content")
 }
@@ -119,6 +129,8 @@ model SocialConnection {
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId         String
   Team           Team     @relation(fields: [teamId], references: [id])
+  brandId        String?
+  Brand          Brand?   @relation(fields: [brandId], references: [id])
 
   @@unique([userId, platform])
   @@map("social_connections")
@@ -152,6 +164,7 @@ model Team {
   contentRequests ContentRequest[]
   generatedContents GeneratedContent[]
   socialConnections SocialConnection[]
+  brands         Brand[]
 
   @@map("teams")
 }
@@ -175,6 +188,37 @@ model SuperAdmin {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("super_admins")
+}
+
+model Brand {
+  id          String        @id @default(uuid())
+  name        String
+  teamId      String
+  team        Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  identities  BrandIdentity[]
+  socialConnections SocialConnection[]
+  contentRequests ContentRequest[]
+  generatedContents GeneratedContent[]
+  ideabankEntries IdeabankEntry[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  memberships BrandMembership[]
+
+  @@unique([teamId, name])
+  @@map("brands")
+}
+
+model BrandMembership {
+  id       String   @id @default(uuid())
+  userId   String
+  brandId  String
+  role     TeamRole // Reuse TeamRole enum for now
+  joinedAt DateTime @default(now())
+  brand    Brand    @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, brandId])
+  @@map("brand_memberships")
 }
 
 enum IdeaType {

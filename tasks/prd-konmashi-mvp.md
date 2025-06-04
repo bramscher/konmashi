@@ -670,3 +670,17 @@ Each droid is designed with:
 **References:**
 - See `docs/# TeamPersonaStarter: Konmashi.md` for full droid details and prompt examples.
 - The agentic model should be reflected in UI/UX design, conversational flows, and technical architecture (see also 'User Interaction and Design Goals' and 'Technical Assumptions'). 
+
+## Stripe Subscription & License Management (Planned)
+
+Konmashi will support paid subscriptions and license (seat) management using Stripe. This will include:
+
+- Stripe product, price, and plan setup for SaaS subscriptions (monthly/annual, tiers, seat count)
+- Core subscription logic: subscribe, upgrade, downgrade, cancel
+- Stripe webhook handling to update the database on payment/subscription events
+- License count in the database is always synced to the active Stripe subscription/plan/quantity
+- "Upgrade Licenses" UI triggers Stripe Checkout or Billing Portal for seat upgrades
+- On successful payment (via webhook), the license count is updated and more team members can be added
+- Automated tests for subscription and license management flows
+
+This ensures that license enforcement and upgrades are always tied to successful payment and Stripe is the source of truth for billing and seat count. 

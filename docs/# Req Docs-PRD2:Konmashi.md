@@ -3,26 +3,41 @@
 ## 1. Goal, Objective and Context
 
 **Goal:**
-The primary goal of Konmashi is to empower creators, businesses, and agencies to effortlessly master their digital content strategy and execution by providing an intelligent, AI-powered SaaS platform. Konmashi aims to serve as a virtual "AI content management team," making sophisticated, multi-platform content marketing accessible and manageable for users regardless of their prior expertise or team size.
+The primary goal of Konmashi is to empower creators, businesses, and agencies to effortlessly master their digital content strategy and execution by providing an intelligent, AI-powered SaaS platform. Konmashi aims to serve as a virtual "AI content management team," making sophisticated, multi-platform content marketing accessible and manageable for users regardless of their prior expertise or team size. This is realized through the use of **Kroids**—agentic personas representing specialized roles in a content team—who are central to both the product concept and the user experience (sidebar, chat, etc.).
 
 **Objective:**
 Konmashi's core objective is to transform the content marketing lifecycle – from ideation and brand-aligned creation through to multi-channel publishing and performance analysis. It will achieve this by:
 * Simplifying and automating complex content creation tasks (text, image, video).
 * Ensuring deep personalization and brand consistency through AI that learns and adapts to each tenant's unique vision and mission.
 * Providing tools and workflows that amplify user capabilities, making them feel "superhuman" in their ability to generate high volumes of diverse, high-quality content.
-* Offering an integrated, intuitive user experience that is powerful yet not overwhelming.
+* Offering an integrated, intuitive user experience that is powerful yet not overwhelming, with Kroids as the user's virtual team.
 
 **Context:**
-Konmashi operates in a rapidly evolving digital landscape where the demand for fresh, engaging, and multi-platform content is continuously increasing. Many individuals and organizations struggle with the time, cost, and expertise required to meet these demands effectively. Existing tools may be fragmented or require significant learning curves. Konmashi intends to address these challenges by offering a unified, intelligent platform that combines advanced AI generation capabilities with strategic planning, workflow automation, and adaptive learning, tailored to each user's brand. The initial focus will be on delivering a robust Minimum Viable Product (MVP) that validates core content generation, simplified workflows, and initial learning capabilities.
+Konmashi operates in a rapidly evolving digital landscape where the demand for fresh, engaging, and multi-platform content is continuously increasing. Many individuals and organizations struggle with the time, cost, and expertise required to meet these demands effectively. Existing tools may be fragmented or require significant learning curves. Konmashi intends to address these challenges by offering a unified, intelligent platform that combines advanced AI generation capabilities with strategic planning, workflow automation, and adaptive learning, tailored to each user's brand. The initial focus will be on delivering a robust Minimum Viable Product (MVP) that validates core content generation, simplified workflows, and initial learning capabilities, all built around the Kroids and team-based structure.
 
 ## 2. Functional Requirements (MVP)
 
-**User & Brand Management:**
-* The system **shall** allow users to define and store core brand identity elements (e.g., brand voice, tone, key themes) through a guided setup process.
+**Kroids (Agentic Personas):**
+* The system **shall** present a set of Kroids—specialized AI personas (e.g., Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager)—as the core user interface and workflow paradigm.
+* Users **shall** interact with Kroids via the sidebar and chat interface, switching between personas to access different expertise and workflows.
+* Each Kroid **shall** have a unique personality, prompt, and function, and can be extended in the future.
+* See `# TeamPersonaStarter: Konmashi.md` for full persona details.
+
+**Team & Brand Management:**
+* The system **shall** require all users to join or create a Team during onboarding.
+* All data (brand identity, content, ideas, etc.) **shall** be isolated per team, with strict RBAC enforced (roles: ADMIN, MEMBER).
+* Team Admins **shall** be able to invite, remove, and manage members, and assign roles.
+* The system **shall** allow users to define and store core brand identity elements (e.g., brand voice, tone, key themes) through a guided setup process, scoped to the team.
 * The system **shall** use the defined brand identity to inform all AI content generation.
 
+**License Management & Stripe Integration (Planned):**
+* Each team **shall** have a license count (number of seats/members allowed), enforced in the UI and backend.
+* When the license limit is reached, inviting new members **shall** be disabled until more licenses are purchased.
+* Team Admins **shall** be able to upgrade licenses (increase seat count) via a Stripe-powered checkout (coming soon).
+* License usage and upgrades **shall** be visible in the Team Admin dashboard.
+
 **Content Ideation & Initiation:**
-* The system **shall** provide a conversational chat interface (via an "Orchestrator AI") for users to submit simple content creation requests.
+* The system **shall** provide a conversational chat interface (via an "Orchestrator" Kroid) for users to submit simple content creation requests.
 * The system **shall** allow users to capture, store, and view text-based ideas and web links in a basic "Ideabank."
 
 **Content Generation (Short-Form Focus for MVP):**
@@ -42,12 +57,25 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * The system **shall** provide a simple calendar interface for users to view their scheduled content.
 * The system **shall** display a basic status or progress indicator for active content generation requests initiated by the user.
 
+## 2a. The Kroids: Core Agentic Personas
+
+Konmashi's Kroids are the heart of the platform's agentic model. Each Kroid represents a specialized role in a high-performing content team. For MVP, the following Kroids are included:
+
+- **Orchestrator** (AI project manager, chat interface lead)
+- **Strategist** (content strategy, planning)
+- **Copywriter** (text/copy generation)
+- **Designer** (visuals, images, branding)
+- **Analyst** (performance, analytics)
+- **Community Manager** (engagement, feedback)
+
+Each Kroid is accessible via the sidebar and chat, and users can switch between them to access different workflows and expertise. The Kroids' personalities, prompts, and functions are detailed in `# TeamPersonaStarter: Konmashi.md`.
+
 ## 3. Non Functional Requirements (MVP)
 
 **Usability:**
 * The system **shall** be perceived by its target users (Solopreneurs, SMBs, Agency Professionals) as "easy to use" and "intuitive" for core MVP workflows. This will be validated through user feedback and usability testing (e.g., aiming for a System Usability Scale (SUS) score above a defined target like 70).
-* The user interface **shall** embody a "cool, modern" aesthetic and provide a sense of empowerment and efficiency (the "superhuman capabilities" feeling), without overwhelming new users encountering the MVP features.
-* The initial onboarding process for core MVP features **shall** be simple, clear, and effectively guide users to achieve their first successful content generation.
+* The user interface **shall** embody a "cool, modern" aesthetic and provide a sense of empowerment and efficiency (the "superhuman capabilities" feeling), without overwhelming new users encountering the MVP features. The Kroids and team-based structure are central to this experience.
+* The initial onboarding process for core MVP features **shall** be simple, clear, and effectively guide users to achieve their first successful content generation, including team creation/joining and Kroid introduction.
 
 **Performance:**
 * Core AI content generation tasks for the MVP (e.g., generating a text-based social post, a simple image with caption) **shall** complete within a timeframe that feels responsive and efficient to the user (specific target times to be benchmarked, e.g., typically under 30-60 seconds for simple tasks).
@@ -73,10 +101,10 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 
 * **Overall Vision & Experience:**
     * **Desired Look and Feel:** The user interface (UI) and user experience (UX) for Konmashi should be perceived as "clean, modern, simple, and intuitive." It must be "cool, useful, and easy to use."
-    * **Core User Experience:** The platform should evoke a feeling of "superhuman capabilities" by amplifying user efforts in content creation and management, yet it must achieve this without overwhelming users, particularly during their initial interactions and for core MVP workflows.
+    * **Core User Experience:** The platform should evoke a feeling of "superhuman capabilities" by amplifying user efforts in content creation and management, yet it must achieve this without overwhelming users, particularly during their initial interactions and for core MVP workflows. The Kroids and team-based structure are central to this experience.
     * **Brandability (especially for Premium/Agency Tiers):** The platform should offer capabilities for tenants (particularly premium or agency accounts) to "brand it a bit to feel like their own." This could involve aspects like logo placement, theme color adjustments, or custom domains, enhancing the agency's value proposition to their clients.
 * **Key Interaction Paradigms:**
-    * **Conversational AI Interaction:** A primary method for initiating tasks and making requests will be through a natural language chat interface with the Orchestrator AI, designed for "easy button" simplicity and complex task delegation.
+    * **Conversational AI Interaction:** A primary method for initiating tasks and making requests will be through a natural language chat interface with the Orchestrator Kroid, designed for "easy button" simplicity and complex task delegation. Other Kroids are accessible via the sidebar for specialized workflows.
     * **Visual Planning & Workflow Management:**
         * **Interactive Calendar:** Users will interact with a dynamic calendar for scheduling content, visualizing campaigns, and initiating new work items (e.g., via a "+" button with workflow choices). Items in `Scheduled` and `Posted` stages from the Content Lifecycle Kanban would be clearly reflected here.
         * **Ideabank Kanban:** This will be for capturing and nurturing *initial raw ideas* through stages like `Raw Input`, `Refining Concept`, until an idea is committed to the "Queue for Production."
@@ -87,12 +115,12 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
     * **Drag-and-Drop Functionality:** Users will utilize drag-and-drop to move cards through the Kanban stages, prioritize items in queues (like the Ideabank's "Queue for Production"), and potentially to adjust schedules on the calendar.
 * **Core Screens/Views (Conceptual for MVP):**
     1.  **Login/Authentication Screen:** Standard entry point for users to access the platform securely.
-    2.  **Main Dashboard / Command Center:** The primary landing area after login. Could prominently feature the **Orchestrator Chat Interface** for quick task initiation. Likely provides access to, or an overview of, the Content Calendar, active tasks, and important notifications.
+    2.  **Main Dashboard / Command Center:** The primary landing area after login. Could prominently feature the **Orchestrator Chat Interface** for quick task initiation. Likely provides access to, or an overview of, the Content Calendar, active tasks, and important notifications. The sidebar features the Kroids for persona switching.
     3.  **Ideabank View:** Displays the **Ideabank Kanban** with stages like `Raw Idea`, `Refining`, `Queued for Production`, `Archive`. Allows users to add new ideas and manage them.
     4.  **Content Lifecycle Kanban View:** Shows active content pieces as cards moving through: `Idea` -> `Prompt` -> `Staging` -> `Production` -> `Scheduled` -> `Posted` -> `Analysis`.
     5.  **Content Calendar View:** Displays scheduled and previously posted content (daily, weekly, monthly views). Features the "+" button gateway for initiating new content/campaigns.
     6.  **Content Review & Simple Edit Interface:** An integrated area where users review AI-generated content, provide feedback, rate, and make simple edits (e.g., basic hybrid video editor).
-    7.  **Basic Settings Page:** For managing user profile, core Brand Identity elements, and social media platform connections.
+    7.  **Basic Settings Page:** For managing user profile, core Brand Identity elements, and social media platform connections, as well as team and license management (for Admins).
 * **Accessibility Aspirations:** While detailed specifications will be defined during the UI/UX design phase, Konmashi will aspire to meet widely accepted web accessibility guidelines, such as WCAG 2.1 Level AA, for its core MVP user workflows. This will help ensure the platform is usable by a broad audience, including people with disabilities. The Design Architect (Jane) will be tasked with exploring and defining specific accessibility requirements and implementation strategies.
 * **Branding Considerations (High-Level):** The branding for Konmashi itself (logo, color scheme, overall visual identity) will be developed as part of the design process. The platform should also allow tenants (especially premium/agency accounts) to apply some level of their own branding to their instance.
 * **Target Devices/Platforms:** Primary Interface: A desktop-first responsive web application. Mobile Access: The web application should be responsive to work on mobile browsers. Specific mobile capabilities should optimize for: Idea capture and Monitoring workflows.
@@ -105,7 +133,8 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
     * *Rationale:* This structure will allow for clear separation of concerns and independent management of distinct major components, such as the Next.js frontend application and the Python-based `toolkit.hangten.studio` backend services. This approach can facilitate focused development efforts, allow for potentially different deployment cadences for these components, and better accommodate different underlying technology stacks.
 * **High-Level Service Architecture:** A **mixed architectural approach** is envisioned, open to refinement by the Architect. This will likely leverage:
     * **Next.js:** For the primary web frontend and potentially for its integrated backend-for-frontend (BFF) functionalities.
-    * **Supabase:** As a Backend-as-a-Service (BaaS) for core database functionalities, user authentication, vector storage (Supabase Vector for RAG), and other standard backend features.
+    * **Supabase:** As a Backend-as-a-Service (BaaS) for core database functionalities, user authentication, vector storage (Supabase Vector for RAG), and other standard backend features. All user data is scoped to Teams, with RBAC enforced.
+    * **Stripe:** For subscription and license management, including license upgrades and seat enforcement (planned, see License Management section).
     * **`toolkit.hangten.studio` (Python-based API services):** The organization's existing Python toolkit, potentially hosted on GCP, will be utilized as one or more distinct API services for its specialized text, image, and video manipulation capabilities.
     * **Other AI Services/Integrations:** External AI model integrations (e.g., LLMs, advanced image generation, HeyGen-like avatar services) or specific internal AI agent orchestration logic may be implemented as separate, focused microservices or serverless functions, depending on the Architect's design, to ensure modularity and scalability.
     * *Rationale:* This mixed architecture aims to combine the rapid development benefits of Supabase for common backend needs, the modern capabilities of Next.js for the user-facing application, and the specialized power of the Python toolkit and other AI services through well-defined APIs. This approach provides flexibility, allows for technology diversity where appropriate (e.g., Python for AI/ML tasks, JavaScript/TypeScript for the frontend), and supports the Polyrepo structure. The Architect will define the precise boundaries, communication patterns, and deployment strategies for these components.
@@ -114,7 +143,7 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * **Frontend Framework:** NextJS (to be used as much as possible).
 * **Backend & Database Platform:** Supabase (including Supabase Vector for RAG).
 * **UI Components:** shadcn/ui.
-* **Payments:** Stripe.
+* **Payments:** Stripe (for license management and upgrades).
 * **Hosting:** Vercel initially, open to GCP/AWS for scaling.
 * **Core AI Processing:** The organization's Python-based `toolkit.hangten.studio` (potentially hosted on GCP) is preferred for core text, image, and video manipulation via its API services.
 * **ORM:** An appropriate ORM for Supabase will be selected as needed (e.g., Prisma, TypeORM, or Supabase client libraries).
@@ -131,6 +160,8 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * **Robust Token Management System:** The system must implement a normalized token economy for all AI service calls. This includes granular tracking per tenant/client and an updatable internal cost-mapping table.
 * **Multi-Client Architecture:** Must support agencies managing distinct client workspaces with isolated data and tracking.
 * **Individualized & Secure Platform Connections:** Must post content on behalf of individual tenants/clients using their specific authenticated credentials for each platform to handle rate limits and ensure security.
+* **Team-Based Data Isolation & RBAC:** All data is scoped to Teams, with strict role-based access control for all actions and endpoints.
+* **License Management & Stripe Integration:** License count is enforced per team, with planned Stripe integration for upgrades and seat management.
 
 **Risks (from Project Brief):**
 * **Technical Complexity & Integration:** Integrating multiple AI services, RAG, hybrid video editor.
@@ -152,7 +183,7 @@ To ensure the Konmashi MVP is functional, reliable, secure, and provides a good 
         * Communication between the Next.js frontend and Supabase backend.
         * Integration of the frontend with the `toolkit.hangten.studio` API services.
         * Interactions with critical external AI APIs (LLMs, Image/Video APIs).
-        * The flow of data and commands between the Orchestrator AI and other internal AI agents/modules.
+        * The flow of data and commands between the Orchestrator Kroid and other internal AI agents/modules.
     * The goal is to ensure these components work together seamlessly.
 3.  **End-to-End (E2E) Testing:**
     * Key user workflows for the MVP will be tested from start to finish, simulating real user scenarios. Examples include:
@@ -250,18 +281,18 @@ This section details the Epics and User Stories for the Konmashi MVP.
 ---
 **Epic 2: MVP "Easy Button" Content Generation (Text & Image Posts)**
 
-* **Goal:** To deliver the core "superpower" of generating fundamental on-brand content. This involves enabling users to initiate requests for text-based social media posts (e.g., for Twitter, LinkedIn) and image-based posts (including AI-generated images and captions, e.g., for Instagram) via the conversational Orchestrator AI. Users should be able to review these generated assets, optimized for at least two platforms.
+* **Goal:** To deliver the core "superpower" of generating fundamental on-brand content. This involves enabling users to initiate requests for text-based social media posts (e.g., for Twitter, LinkedIn) and image-based posts (including AI-generated images and captions, e.g., for Instagram) via the conversational Orchestrator Kroid. Users should be able to review these generated assets, optimized for at least two platforms.
 
 **User Stories for Epic 2:**
 
 **1. Story 2.1: Conversational AI Request for Text Post**
-    * **User Story:** "As a Tenant, I want to request a text-based social media post (e.g., for Twitter, LinkedIn) via the conversational Orchestrator AI by providing a topic or simple prompt, so that I can quickly generate initial on-brand text content."
+    * **User Story:** "As a Tenant, I want to request a text-based social media post (e.g., for Twitter, LinkedIn) via the conversational Orchestrator Kroid by providing a topic or simple prompt, so that I can quickly generate initial on-brand text content."
     * **Acceptance Criteria (ACs):**
-        * **AC1:** The Orchestrator AI chat interface accepts natural language requests for text-based posts.
+        * **AC1:** The Orchestrator Kroid chat interface accepts natural language requests for text-based posts.
         * **AC2:** The user can specify a topic or provide a simple prompt for the desired text content.
         * **AC3:** The user can indicate (or the system defaults to) a primary target platform for the initial text post generation (e.g., "general social post," "tweet," "LinkedIn post").
         * **AC4:** The request is successfully submitted to the backend for processing.
-        * **AC5:** The user receives an acknowledgement from the Orchestrator AI that the text post generation has started.
+        * **AC5:** The user receives an acknowledgement from the Orchestrator Kroid that the text post generation has started.
 
 **2. Story 2.2: AI Generation of On-Brand Text Post**
     * **User Story:** "As the System (Konmashi AI), I want to process the tenant's request (from Story 2.1) and their brand identity (from Epic 1) to generate a relevant, on-brand text-based social media post, so that the tenant receives a useful draft."
@@ -273,13 +304,13 @@ This section details the Epics and User Stories for the Konmashi MVP.
         * **AC5:** The system flags or handles any errors during the LLM API call gracefully (e.g., logs error, potentially retries, or informs the user if generation fails).
 
 **3. Story 2.3: Conversational AI Request for Image Post (with AI Image)**
-    * **User Story:** "As a Tenant, I want to request an image-based social media post (e.g., for Instagram, Facebook) via the conversational Orchestrator AI by providing a topic or simple prompt for the image and an optional related caption idea, so that I can quickly generate initial on-brand visual content."
+    * **User Story:** "As a Tenant, I want to request an image-based social media post (e.g., for Instagram, Facebook) via the conversational Orchestrator Kroid by providing a topic or simple prompt for the image and an optional related caption idea, so that I can quickly generate initial on-brand visual content."
     * **Acceptance Criteria (ACs):**
-        * **AC1:** The Orchestrator AI chat interface accepts natural language requests for image-based posts.
+        * **AC1:** The Orchestrator Kroid chat interface accepts natural language requests for image-based posts.
         * **AC2:** The user can specify a topic or provide a simple prompt for the desired image.
         * **AC3:** The user can optionally provide a topic or text for an accompanying caption.
         * **AC4:** The request is successfully submitted to the backend for processing.
-        * **AC5:** The user receives an acknowledgement from the Orchestrator AI that the image post generation has started.
+        * **AC5:** The user receives an acknowledgement from the Orchestrator Kroid that the image post generation has started.
 
 **4. Story 2.4: AI Generation of On-Brand Image & Caption**
     * **User Story:** "As the System (Konmashi AI), I want to process the tenant's request (from Story 2.3) and their brand identity to generate a relevant, on-brand image (using an integrated AI image generation service) and, if a caption topic was provided, a corresponding caption, so that the tenant receives a useful visual post draft."
@@ -417,7 +448,7 @@ This section details the Epics and User Stories for the Konmashi MVP.
         * **AC6:** The calendar displays content scheduled for the one platform connected in MVP.
 
 **6. Story 4.6: Basic Status Indication for Active Content Requests (MVP)**
-    * **User Story:** "As a Tenant, when I have initiated a content generation request (e.g., via the chat orchestrator), I want to see a basic, clear visual indicator of its current high-level status (e.g., 'Processing Idea,' 'Generating Draft,' 'Ready for Review,' 'Scheduled') within the application, so I have a general sense of what Konmashi is working on for me."
+    * **User Story:** "As a Tenant, when I have initiated a content generation request (e.g., via the chat Orchestrator), I want to see a basic, clear visual indicator of its current high-level status (e.g., 'Processing Idea,' 'Generating Draft,' 'Ready for Review,' 'Scheduled') within the application, so I have a general sense of what Konmashi is working on for me."
     * **Acceptance Criteria (ACs):**
         * **AC1:** When a content generation task is active, its status is visible in a designated area (e.g., a simple list in a dashboard widget, or associated with the item if viewed in the Ideabank or review interface).
         * **AC2:** At least 3-4 distinct high-level statuses are defined and used for MVP (e.g., "Pending," "In Progress," "Ready for Review," "Approved," "Scheduled").
@@ -432,12 +463,12 @@ This section details the Epics and User Stories for the Konmashi MVP.
 **User Stories for Epic 5:**
 
 **1. Story 5.1: Conversational AI Request for Short-Form Video Concept/Script**
-    * **User Story:** "As a Tenant, I want to be able to request a concept or script for a short-form video (e.g., for TikTok, Reels) via the conversational Orchestrator AI by providing a topic, key message, desired length indication (e.g., 'around 30 seconds'), or an idea from my Ideabank, so that I can get initial creative direction and a structural outline for a video."
+    * **User Story:** "As a Tenant, I want to be able to request a concept or script for a short-form video (e.g., for TikTok, Reels) via the conversational Orchestrator Kroid by providing a topic, key message, desired length indication (e.g., 'around 30 seconds'), or an idea from my Ideabank, so that I can get initial creative direction and a structural outline for a video."
     * **Acceptance Criteria (ACs):**
-        * **AC1:** The Orchestrator AI chat interface accepts natural language requests for short-form video concepts or scripts.
+        * **AC1:** The Orchestrator Kroid chat interface accepts natural language requests for short-form video concepts or scripts.
         * **AC2:** The user can specify a topic, key message, an approximate desired length, or reference an existing idea from their Ideabank.
         * **AC3:** The request is successfully submitted to the backend for processing.
-        * **AC4:** The user receives an acknowledgement from the Orchestrator AI that the video concept/script generation has started.
+        * **AC4:** The user receives an acknowledgement from the Orchestrator Kroid that the video concept/script generation has started.
 
 **2. Story 5.2: AI Generation of Video Concept/Script with "Faceless Video" Suggestions**
     * **User Story:** "As the System (Konmashi AI), based on the tenant's request and brand identity, I want to generate a concept outline and/or a brief script for a short-form video, including actionable suggestions for a 'faceless video' production approach (e.g., types of stock footage to intersperse, suggested voiceover tone/style, ideas for on-screen text or simple graphics), so that the tenant receives a structured and practical starting point for creating simple video content."
@@ -529,3 +560,11 @@ Based on our discussions and requirements analysis for the **Konmashi** project,
 * **MVP Scope:** Focus on Epics 1-5 defined herein. The architecture should support these MVP features while providing a scalable foundation.
 
 Please engage the user in your "Create Architecture" task, review this PRD thoroughly (especially "Functional Requirements," "Non-Functional Requirements," "Technical Assumptions," and the "User Interaction and Design Goals"), and collaboratively design the system architecture for Konmashi.
+
+## Brand Management & Onboarding (Update)
+
+- All brand management is now handled via the Manage Brands dashboard (`/dashboard/brands`).
+- Users can add, edit, and manage multiple brands per team, with inline Brand Identity setup and editing.
+- Onboarding now redirects to Manage Brands if any brands exist; the Brand Setup page is only shown for first-time onboarding.
+- This supports agencies, multi-brand teams, and solo users alike.
+- Per-brand access control is supported via BrandMembership.

@@ -146,7 +146,9 @@ export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: ke
       </div>
       <div className="flex-1 overflow-y-auto mb-4 border rounded p-3 bg-background" aria-live="polite">
         {messages.length === 0 && !loading && !error && (
-          <div className="text-muted-foreground text-center mt-8">Start a conversation with this droid…</div>
+          <div className="text-muted-foreground text-center mt-8">
+            Start a conversation with Kroid: {droids[droidKey].name.split(' ')[0]}
+          </div>
         )}
         {messages.map((msg, idx) => (
           <div key={idx} className={`mb-3 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
