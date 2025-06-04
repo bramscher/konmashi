@@ -117,16 +117,16 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
 - [x] 1.14 Implement Team onboarding and teamId integration
   - [x] 1.14.1 Create Team and TeamMember entry when a new user completes onboarding
   - [x] 1.14.2 Update onboarding/profile logic to associate all new records (BrandIdentity, IdeabankEntry, ContentRequest, GeneratedContent, SocialConnection) with the correct teamId
-    - [ ] (Note: Other models will be updated as their features are built)
+    - [x] (Note: Other models will be updated as their features are built)
   - [x] 1.14.3 (Optional) Make teamId required in the schema and run a migration to enforce non-nullability
-- [ ] 1.15 Migrate all tenant-specific models to include teamId and update relations
-  - [ ] 1.15.1 Update BrandIdentity model to include teamId and relation
-  - [ ] 1.15.2 Update IdeabankEntry model to include teamId and relation
-  - [ ] 1.15.3 Update ContentRequest model to include teamId and relation
-  - [ ] 1.15.4 Update GeneratedContent model to include teamId and relation
-  - [ ] 1.15.5 Update SocialConnection model to include teamId and relation
-  - [ ] 1.15.6 Update any other tenant-specific models to include teamId
-  - [ ] 1.15.7 Write and run migration scripts for existing data (if needed)
+- [x] 1.15 Migrate all tenant-specific models to include teamId and update relations
+  - [x] 1.15.1 Update BrandIdentity model to include teamId and relation
+  - [x] 1.15.2 Update IdeabankEntry model to include teamId and relation
+  - [x] 1.15.3 Update ContentRequest model to include teamId and relation
+  - [x] 1.15.4 Update GeneratedContent model to include teamId and relation
+  - [x] 1.15.5 Update SocialConnection model to include teamId and relation
+  - [x] 1.15.6 Update any other tenant-specific models to include teamId
+  - [x] 1.15.7 Write and run migration scripts for existing data (if needed)
 - [ ] 1.16 Update all API endpoints and queries to require and filter by teamId
     - [ ] 1.16.1 Update BrandIdentity API endpoints (CRUD) to require/filter by teamId
     - [ ] 1.16.2 Update IdeabankEntry API endpoints (CRUD) to require/filter by teamId
