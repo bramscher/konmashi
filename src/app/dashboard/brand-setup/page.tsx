@@ -45,13 +45,31 @@ export default function BrandSetupPage() {
     }
     setLoading(true);
     try {
+      // 1. Create Team and TeamMember first
+      const teamRes = await fetch('/api/team/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.brandName,
+          licenseCount: 1,
+        }),
+      });
+      if (!teamRes.ok) {
+        const errorData = await teamRes.json();
+        throw new Error(errorData.error || 'Failed to create team');
+      }
+      // Refresh user context to ensure TeamMember is available
+      if (user?.id) {
+        await fetchPrismaUser(user.id);
+      }
+
+      // 2. Now save brand identity (teamId will be found in API)
       const response = await fetch('/api/brand-identity', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...data,
           voiceDescriptors: data.voiceDescriptors.split(',').map(s => s.trim()).filter(s => s),
-          // userId: user.id, // userId is taken from session in the API route
         }),
       });
 
@@ -59,21 +77,17 @@ export default function BrandSetupPage() {
         const errorData = await response.json();
         throw new Error(errorData.error || 'Failed to save brand identity');
       }
-      
-      toast.success('Brand Identity Saved!', {
-        description: 'Your brand information has been successfully saved.',
+
+      toast.success('Brand Identity & Team Created!', {
+        description: 'Your brand and team have been set up.',
       });
 
-      if (user?.id) {
-        await fetchPrismaUser(user.id);
-      }
-      
-      router.push('/dashboard'); 
-
+      router.push('/dashboard');
+      window.location.reload();
     } catch (error) {
-      console.error('Error saving brand identity:', error);
+      console.error('Error creating team or saving brand identity:', error);
       const message = error instanceof Error ? error.message : 'An unexpected error occurred';
-      toast.error('Error Saving Brand Identity', {
+      toast.error('Error Creating Team or Saving Brand Identity', {
         description: message,
       });
     }

@@ -82,22 +82,23 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [x] 1.4 Create protected route middleware for dashboard access
   - [x] 1.5 Set up comprehensive error handling and toast notifications
   - [x] 1.6 Implement email verification and account activation flow
-  - [x] 1.7 Create user onboarding flow with brand identity setup
+  - [x] 1.7 Create user onboarding flow with brand identity setup (now team-based)
     - [x] 1.7.1 Add hasCompletedOnboarding field to User model and migrate database
     - [x] 1.7.2 Implement logic to check hasCompletedOnboarding after login/signup
     - [x] 1.7.3 Redirect users with hasCompletedOnboarding=false to the brand setup page (`/dashboard/brand-setup`)
     - [x] 1.7.4 Update hasCompletedOnboarding to true in the database after successful brand setup submission
+    - [ ] 1.7.5 Onboarding and brand setup now create/edit brand identity for the current Team (not just user)
   - [x] 1.8 Add role-based access control (RBAC) foundation for future agency features
   - [x] 1.9 Implement session management and auto-refresh tokens
   - [x] 1.10 Create legal compliance framework with privacy policy and terms integration
-  - [x] 1.11 Ensure secure storage and retrieval of brand identity elements per tenant
-    - [x] 1.11.1 Store brand identity elements in a dedicated table, associated with the user/tenant
-    - [x] 1.11.2 Enforce access control: only the authenticated user can create, update, or retrieve their brand identity
+  - [x] 1.11 Ensure secure storage and retrieval of brand identity elements per tenant (now per Team)
+    - [x] 1.11.1 Store brand identity elements in a dedicated table, associated with the Team (not just user/tenant)
+    - [x] 1.11.2 Enforce access control: only authenticated users in the Team can create, update, or retrieve their Team's brand identity
     - [x] 1.11.3 (Optional) Encrypt sensitive brand identity fields at rest if required (not required for MVP)
-    - [x] 1.11.4 Implement a secure API endpoint for retrieving brand identity for the logged-in user
+    - [x] 1.11.4 Implement a secure API endpoint for retrieving brand identity for the logged-in user's Team
     - [x] 1.11.5 Ensure data returned is suitable for AI content generation services
     - [x] 1.11.6 Add tests for data isolation, integrity, and access control
-      - [x] 1.11.6.1 Test: Only authenticated user can access their own brand identity (no cross-tenant access)
+      - [x] 1.11.6.1 Test: Only authenticated users in a Team can access their Team's brand identity (no cross-team access)
       - [x] 1.11.6.2 Test: Data returned matches what was input (integrity)
       - [x] 1.11.6.3 Test: Unauthenticated requests are denied access to brand identity endpoints
   - [x] 1.12 Implement accessibility foundation for onboarding and authentication flows (WCAG 2.1 AA aspiration)
@@ -107,6 +108,39 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 1.12.4 Add screen reader support for onboarding and authentication flows
     - [x] 1.12.5 Test onboarding and authentication flows with accessibility tools (e.g., axe, Lighthouse)
     - [x] 1.12.6 Document accessibility improvements and known limitations
+- [x] 1.13 Add Team, TeamMember, TeamRole, and SuperAdmin models and initial RBAC foundation
+  - [x] 1.13.1 Add Team model to Prisma schema
+  - [x] 1.13.2 Add TeamMember model to Prisma schema
+  - [x] 1.13.3 Add TeamRole enum to Prisma schema
+  - [x] 1.13.4 Add SuperAdmin model to Prisma schema
+  - [x] 1.13.5 Create and run initial migration for team and RBAC models
+- [x] 1.14 Implement Team onboarding and teamId integration
+  - [x] 1.14.1 Create Team and TeamMember entry when a new user completes onboarding
+  - [x] 1.14.2 Update onboarding/profile logic to associate all new records (BrandIdentity, IdeabankEntry, ContentRequest, GeneratedContent, SocialConnection) with the correct teamId
+    - [ ] (Note: Other models will be updated as their features are built)
+  - [x] 1.14.3 (Optional) Make teamId required in the schema and run a migration to enforce non-nullability
+- [ ] 1.15 Migrate all tenant-specific models to include teamId and update relations
+  - [ ] 1.15.1 Update BrandIdentity model to include teamId and relation
+  - [ ] 1.15.2 Update IdeabankEntry model to include teamId and relation
+  - [ ] 1.15.3 Update ContentRequest model to include teamId and relation
+  - [ ] 1.15.4 Update GeneratedContent model to include teamId and relation
+  - [ ] 1.15.5 Update SocialConnection model to include teamId and relation
+  - [ ] 1.15.6 Update any other tenant-specific models to include teamId
+  - [ ] 1.15.7 Write and run migration scripts for existing data (if needed)
+- [ ] 1.16 Update all API endpoints and queries to require and filter by teamId
+    - [ ] 1.16.1 Update BrandIdentity API endpoints (CRUD) to require/filter by teamId
+    - [ ] 1.16.2 Update IdeabankEntry API endpoints (CRUD) to require/filter by teamId
+    - [ ] 1.16.3 Update ContentRequest API endpoints (CRUD) to require/filter by teamId
+    - [ ] 1.16.4 Update GeneratedContent API endpoints (CRUD) to require/filter by teamId
+    - [ ] 1.16.5 Update SocialConnection API endpoints (CRUD) to require/filter by teamId
+    - [ ] 1.16.6 Update any other relevant API endpoints to require/filter by teamId
+- [ ] 1.17 Add tests for team-based data isolation and admin access
+    - [ ] 1.17.1 Test: Only users in a Team can access that Team's data (BrandIdentity, Ideabank, Content, SocialConnection, etc.)
+    - [ ] 1.17.2 Test: Users cannot access or mutate data for Teams they are not a member of
+    - [ ] 1.17.3 Test: Only ADMIN users can access admin endpoints/features for their Team
+    - [ ] 1.17.4 Test: Data returned by APIs is always filtered by teamId
+    - [ ] 1.17.5 Test: UI does not show admin features to non-admins
+    - [ ] 1.17.6 Test: Multi-team membership works as expected (switching, isolation)
 
 - [ ] 2.0 AI Content Generation Core Features  
   - [x] 2.1 Integrate toolkit.hangten.studio API client with authentication

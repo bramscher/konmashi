@@ -30,6 +30,13 @@ export async function POST(request: NextRequest) {
     const userId = session.user.id;
     const rawData = await request.json();
 
+    // Find the user's teamId
+    const teamMembership = await prisma.teamMember.findFirst({ where: { userId } });
+    if (!teamMembership || !teamMembership.teamId) {
+      return NextResponse.json({ error: 'User is not a member of any team.' }, { status: 400 });
+    }
+    const teamId = teamMembership.teamId;
+
     // Validate incoming data
     const validationResult = brandIdentityApiSchema.safeParse(rawData);
     if (!validationResult.success) {
@@ -48,6 +55,7 @@ export async function POST(request: NextRequest) {
           industry,
           voiceDescriptors,
           targetAudience,
+          teamId,
           updatedAt: new Date(),
         },
         create: {
@@ -56,6 +64,7 @@ export async function POST(request: NextRequest) {
           industry,
           voiceDescriptors,
           targetAudience,
+          teamId,
         },
       });
 

@@ -21,9 +21,12 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 
 ## 2. Functional Requirements (MVP)
 
-**User & Brand Management:**
-* The system **shall** allow users to define and store core brand identity elements (e.g., brand voice, tone, key themes) through a guided setup process.
-* The system **shall** use the defined brand identity to inform all AI content generation.
+**User, Team & Brand Management:**
+* The system **shall** allow users to define and store core brand identity elements (e.g., brand voice, tone, key themes) through a guided setup process, and these elements are associated with a Team (company/client), not just a user.
+* The system **shall** support multi-tenant architecture, where each company/client is a Team, and all content, brand identity, ideabank, and social connections are scoped to the Team.
+* The system **shall** enforce that only users with the `ADMIN` role for a Team can access that Team's admin section and manage its settings, prompts, and content.
+* The system **shall** ensure all content, brand identity, ideabank, and social connections are associated with a Team, not just a user.
+* The system **shall** allow users to be members of multiple Teams, with role-based access control (RBAC) enforced per Team.
 
 **Content Ideation & Initiation:**
 * The system **shall** provide a conversational chat interface (via an "Orchestrator AI") for users to submit simple content creation requests.
@@ -89,6 +92,9 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 **Key Differentiators:**
 * **Kanban Boards:** Both the Ideabank Kanban and Content Lifecycle Kanban are central to the user experience, enabling users to visually manage ideas and content as they move through all stages of creation, refinement, and publishing.
 * **Subway Map Workflow Visualization:** The Subway Map provides a visual, step-by-step breakdown of complex content workflows (especially for video and multi-stage content), making the process transparent and user-friendly. Even in the MVP, a basic version of this visualization is included as a core workflow tool.
+* **Team-Based Data Isolation:** All content, brand identity, and admin access are strictly scoped to the Team (company/client). Users only see and manage data for the Team(s) they belong to.
+* **RBAC for Admin Access:** Only users with the `ADMIN` role in a Team can access that Team's admin section and manage its settings, prompts, and content.
+* **Multi-Team Membership:** Users can belong to multiple Teams and switch between them, with all data and permissions updating accordingly.
 
 **Key Interaction Paradigms:**
 * **Conversational AI Interaction:** A primary method for initiating tasks and making requests will be through a natural language chat interface with the Orchestrator AI, designed for "easy button" simplicity and complex task delegation.
@@ -159,6 +165,8 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * **Scalability & Performance:** Handling growth in users, clients, and content.
 * **Cost Management & Token Economy:** Accurately managing AI service costs.
 * **Market Competition & Differentiation:** Maintaining value in a rapidly evolving AI space.
+
+**Multi-Tenant Architecture:** All tenant-specific data (brand identity, content, ideabank, social connections, etc.) is associated with a Team (company/client), not just a user. RBAC is enforced at the Team level for all admin and sensitive operations.
 
 ## 6. Testing requirements
 
@@ -244,27 +252,27 @@ This section details the Epics and User Stories for the Konmashi MVP.
         * **AC7: Visual Indication of Logged-In State:** The shell provides a subtle visual cue indicating the user is logged in (e.g., displaying the user's initials/email or an account icon).
 
 **4. Story 1.4: Initial Brand Identity Input - Guided Workflow**
-    * **User Story:** "As a new Tenant (after signing up and logging in), I want to be guided through a simple, clear initial setup process to define my core brand identity elements (e.g., Brand Name, primary industry/niche, key brand voice descriptors, and a brief target audience description), so that Konmashi has the foundational information needed to start tailoring content to my brand."
+    * **User Story:** "As a new Team Admin (after signing up and logging in), I want to be guided through a simple, clear initial setup process to define my Team's core brand identity elements (e.g., Brand Name, primary industry/niche, key brand voice descriptors, and a brief target audience description), so that Konmashi has the foundational information needed to start tailoring content to my Team."
     * **Acceptance Criteria (ACs):**
-        * **AC1: Accessible Workflow:** The brand identity input workflow is accessible via a clear navigation path (e.g., from the basic application shell, or initiated automatically on first login post-verification if no brand identity exists).
-        * **AC2: Guided Steps:** The workflow consists of simple, clearly defined steps or sections for inputting core brand information.
+        * **AC1: Accessible Workflow:** The brand identity input workflow is accessible via a clear navigation path (e.g., from the basic application shell, or initiated automatically on first login post-verification if no brand identity exists for the Team).
+        * **AC2: Guided Steps:** The workflow consists of simple, clearly defined steps or sections for inputting core brand information for the Team.
         * **AC3: Input Fields:** The workflow includes input fields for: Brand Name; Primary Industry/Niche (e.g., dropdown or free-text); Key Brand Voice Descriptors (e.g., a selection of common keywords like "playful," "professional," "witty," "informative," or a short free-text area); Brief Target Audience Description (e.g., a short text area).
         * **AC4: Clear Instructions:** Each input field or section has clear, concise instructions or examples to guide the user.
-        * **AC5: Submission:** The user can successfully submit or save the entered brand identity information.
-        * **AC6: Confirmation:** Upon submission, the user receives a confirmation message indicating their brand identity has been saved.
-        * **AC7: Skip/Later Option (Optional - for discussion):** The workflow allows a user to optionally skip and complete it later (if deemed appropriate for MVP, otherwise it's a mandatory first step).
-        * **AC8: Editability (Basic):** The user can revisit and edit the saved brand identity information (basic edit functionality for MVP).
+        * **AC5: Submission:** The Team Admin can successfully submit or save the entered brand identity information for the Team.
+        * **AC6: Confirmation:** Upon submission, the Team Admin receives a confirmation message indicating their Team's brand identity has been saved.
+        * **AC7: Skip/Later Option (Optional - for discussion):** The workflow allows a Team Admin to optionally skip and complete it later (if deemed appropriate for MVP, otherwise it's a mandatory first step).
+        * **AC8: Editability (Basic):** The Team Admin can revisit and edit the saved brand identity information for the Team (basic edit functionality for MVP).
 
 **5. Story 1.5: Secure Storage & Retrieval of Core Brand Identity**
-    * **User Story:** "As the System (acting on behalf of the Tenant), I want the core brand identity elements provided by the tenant during the initial setup to be securely stored and persistently associated with their account, so that this information can be consistently retrieved and utilized by AI services for on-brand content generation."
+    * **User Story:** "As the System (acting on behalf of the Team), I want the core brand identity elements provided during the initial setup to be securely stored and persistently associated with the Team, so that this information can be consistently retrieved and utilized by AI services for on-brand content generation."
     * **Acceptance Criteria (ACs):**
-        * **AC1: Data Persistence:** All brand identity elements submitted through the workflow in Story 1.4 (Brand Name, industry/niche, voice descriptors, target audience) are securely saved to the Supabase database.
-        * **AC2: Tenant Association:** The saved brand identity data is correctly and exclusively associated with the specific tenant's user account.
-        * **AC3: Data Integrity:** The stored data accurately reflects the information input by the tenant.
+        * **AC1: Data Persistence:** All brand identity elements submitted through the workflow in Story 1.4 (Brand Name, industry/niche, voice descriptors, target audience) are securely saved to the database and associated with the Team.
+        * **AC2: Team Association:** The saved brand identity data is correctly and exclusively associated with the specific Team.
+        * **AC3: Data Integrity:** The stored data accurately reflects the information input by the Team Admin.
         * **AC4: Secure Storage:** Sensitive aspects of brand identity (if any are deemed sensitive) are stored following security best practices.
-        * **AC5: Retrieval Mechanism:** An internal system mechanism (e.g., an API endpoint or service function) exists to securely retrieve the stored brand identity for a given tenant.
+        * **AC5: Retrieval Mechanism:** An internal system mechanism (e.g., an API endpoint or service function) exists to securely retrieve the stored brand identity for a given Team.
         * **AC6: Accessibility for AI Services:** The retrieved brand identity information is in a format suitable for use by downstream AI content generation services.
-        * **AC7: Update Capability:** The system supports updating the stored brand identity information when a tenant edits it (as per Story 1.4, AC8).
+        * **AC7: Update Capability:** The system supports updating the stored brand identity information when a Team Admin edits it (as per Story 1.4, AC8).
 
 ---
 **Epic 2: MVP "Easy Button" Content Generation (Text & Image Posts)**
