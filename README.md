@@ -263,3 +263,19 @@ Konmashi is an AI-powered content marketing platform for teams, agencies, and so
 
 ## More
 See the Project Brief and PRD for full details.
+
+## 🆕 Recent Major Updates
+
+- **Multi-Brand, Team-Based Architecture:** Each team can manage multiple brands/clients, each with its own brand identity, social connections, and content. All data is strictly isolated by team, with robust RBAC (role-based access control).
+- **Unified Manage Brands Dashboard:** `/dashboard/brands` is now the central place to add, edit, and manage all brands. Inline brand identity setup/editing is supported. Deprecated old Add Brand and Brand Setup pages.
+- **Brand Deletion Flow:** Safe deletion with confirmation modal (type 'Delete "BrandName" Brand'), admin-only, cascades to all related data.
+- **BrandIdentity Data Model:** Supports multiple BrandIdentities per user/team/brand. Compound unique key on `[userId, brandId]` ensures no overwrites.
+- **Markdown Manifesto Rendering:** Brand manifesto field supports up to 4000 characters and renders Markdown beautifully in the UI using `react-markdown` and Tailwind's `prose` classes.
+- **Persona-Driven (Kroids) Workflows:** Sidebar and chat are built around agentic personas (Kroids) for specialized content workflows.
+- **License Management & Stripe Integration:** License count is enforced in UI and backend. Admins can upgrade licenses (Stripe integration planned).
+- **Modern Admin Tools:** Team Admin dashboard for member invite, role change, removal, and license management. Superadmin model for platform-level control.
+- **UX Improvements:** Collapsible, single-expanded brand cards; onboarding redirects to Manage Brands if brands exist; settings and sidebar are modernized.
+
+## 📝 Markdown Support for Brand Manifesto
+
+- The brand manifesto field supports full Markdown formatting. Use headings, lists, bold, italics, and links for rich brand storytelling. Rendered with `react-markdown` and styled with Tailwind's `prose` classes for beautiful display.

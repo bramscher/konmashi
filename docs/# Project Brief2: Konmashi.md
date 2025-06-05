@@ -112,6 +112,27 @@ Each Kroid is accessible via the sidebar and chat, and users can switch between 
 - Onboarding now redirects users to Manage Brands if any brands exist, ensuring a single, modern entry point for all brand-related actions.
 - This approach supports agencies and multi-brand organizations, as well as solo users managing their own brands.
 
+## Recent Major Updates (June 2024)
+
+- **Multi-Brand, Team-Based Architecture:** Teams can manage multiple brands/clients, each with its own brand identity, social connections, and content. All data is strictly isolated by team, with robust RBAC.
+- **Unified Manage Brands Dashboard:** `/dashboard/brands` is now the central place to add, edit, and manage all brands. Inline brand identity setup/editing is supported. Deprecated old Add Brand and Brand Setup pages.
+- **Brand Deletion Flow:** Safe deletion with confirmation modal (type 'Delete "BrandName" Brand'), admin-only, cascades to all related data.
+- **BrandIdentity Data Model:** Supports multiple BrandIdentities per user/team/brand. Compound unique key on `[userId, brandId]` ensures no overwrites.
+- **Markdown Manifesto Rendering:** Brand manifesto field supports up to 4000 characters and renders Markdown beautifully in the UI using `react-markdown` and Tailwind's `prose` classes.
+- **Persona-Driven (Kroids) Workflows:** Sidebar and chat are built around agentic personas (Kroids) for specialized content workflows.
+- **License Management & Stripe Integration:** License count is enforced in UI and backend. Admins can upgrade licenses (Stripe integration planned).
+- **Modern Admin Tools:** Team Admin dashboard for member invite, role change, removal, and license management. Superadmin model for platform-level control.
+- **UX Improvements:** Collapsible, single-expanded brand cards; onboarding redirects to Manage Brands if brands exist; settings and sidebar are modernized.
+
+### Markdown Support for Brand Manifesto
+- The brand manifesto field supports full Markdown formatting. Use headings, lists, bold, italics, and links for rich brand storytelling. Rendered with `react-markdown` and styled with Tailwind's `prose` classes for beautiful display.
+
+### Brand Deletion Flow
+- Brand deletion is now a safe, admin-only operation. Users must type 'Delete "BrandName" Brand' to confirm. All related data is deleted. The UI refreshes the brand list and shows errors if deletion fails.
+
+### Brand Card UX
+- The Manage Brands dashboard uses collapsible, single-expanded brand cards. Each card shows the brand name, chevron, and actions (edit, delete) always. Only one card can be expanded at a time to show details and the BrandIdentityForm.
+
 ## Reference
 
 - See `# TeamPersonaStarter: Konmashi.md` for full Kroid/persona details and prompt examples.

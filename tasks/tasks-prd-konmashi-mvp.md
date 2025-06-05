@@ -204,14 +204,16 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] Delete button only enabled if input matches
     - [x] API endpoint deletes brand and all related data (cascading), admin-only
     - [x] UI refreshes brand list on success, shows error on failure
-  - [ ] 3.6 Build notification system for content generation completion and important events
-  - [ ] 3.7 Implement dark/light theme support with user preference storage
-  - [x] 3.8 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager) (RENAMED KROIDS, ICON ROW, SWITCHING WORKS)
-  - [ ] 3.9 Remove Paid Ads Specialist persona from dashboard for MVP
-  - [ ] 3.10 Create mobile-responsive interface for idea capture and monitoring workflows
-  - [ ] 3.11 Build search and filtering capabilities across all content and ideas
-  - [ ] 3.12 Implement keyboard shortcuts for power users (optional for MVP)
-  - [ ] 3.13 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
+  - [x] 3.6 Add Markdown support for brand manifesto field (react-markdown, Tailwind prose)
+  - [x] 3.7 Update Manage Brands dashboard to use collapsible, single-expanded brand cards (chevron, edit, delete always visible)
+  - [ ] 3.8 Build notification system for content generation completion and important events
+  - [ ] 3.9 Implement dark/light theme support with user preference storage
+  - [x] 3.10 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager) (RENAMED KROIDS, ICON ROW, SWITCHING WORKS)
+  - [ ] 3.11 Remove Paid Ads Specialist persona from dashboard for MVP
+  - [ ] 3.12 Create mobile-responsive interface for idea capture and monitoring workflows
+  - [ ] 3.13 Build search and filtering capabilities across all content and ideas
+  - [ ] 3.14 Implement keyboard shortcuts for power users (optional for MVP)
+  - [ ] 3.15 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
 
 - [ ] 4.0 Social Media Platform Integrations
   - [ ] 4.1 Integrate Instagram Graph API for posting and scheduling
