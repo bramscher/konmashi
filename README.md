@@ -279,3 +279,4 @@ See the Project Brief and PRD for full details.
 ## 📝 Markdown Support for Brand Manifesto
 
 - The brand manifesto field supports full Markdown formatting. Use headings, lists, bold, italics, and links for rich brand storytelling. Rendered with `react-markdown` and styled with Tailwind's `prose` classes for beautiful display.
+::
