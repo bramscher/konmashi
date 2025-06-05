@@ -49,9 +49,9 @@ export async function POST(request: NextRequest) {
 
     // Use a Prisma transaction to ensure both operations succeed or fail together
     const result = await prisma.$transaction(async (tx) => {
-      // 1. Upsert BrandIdentity
+      // 1. Upsert BrandIdentity (now by userId + brandId)
       const brandIdentity = await tx.brandIdentity.upsert({
-        where: { userId },
+        where: { userId_brandId: { userId, brandId } },
         update: {
           brandName,
           industry,

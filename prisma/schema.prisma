@@ -14,7 +14,7 @@ model User {
   createdAt              DateTime           @default(now())
   updatedAt              DateTime           @updatedAt
   hasCompletedOnboarding Boolean            @default(false)
-  brand_identities       BrandIdentity?
+  brand_identities       BrandIdentity[]
   contentRequests        ContentRequest[]
   ideabankEntries        IdeabankEntry[]
   socialConnections      SocialConnection[]
@@ -27,7 +27,8 @@ model User {
 
 model BrandIdentity {
   id               String   @id @default(uuid())
-  userId           String   @unique
+  userId           String
+  brandId          String
   brandName        String?
   industry         String?
   voiceDescriptors String[]
@@ -35,12 +36,12 @@ model BrandIdentity {
   brandManifesto   String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
-  users            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   teamId           String
   Team             Team     @relation(fields: [teamId], references: [id])
-  brandId          String?
-  Brand            Brand?   @relation(fields: [brandId], references: [id])
+  Brand            Brand    @relation(fields: [brandId], references: [id])
 
+  @@unique([userId, brandId])
   @@map("brand_identities")
 }
 

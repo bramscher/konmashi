@@ -198,14 +198,20 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [x] 3.2 Build main dashboard/command center with content generation status, quick actions, and Orchestrator AI chat entry (WELCOME MESSAGE IS DYNAMIC, PERSONALIZED)
   - [x] 3.3 Implement brand identity setup wizard with guided, multi-step workflow and clear instructions/examples (SUPPORTS EDITING, SHOWS PREVIOUS ENTRY, MANIFESTO FIELD ADDED)
   - [x] 3.4 Create settings page for user preferences, account management, and brand identity editing (BASIC USER SETTINGS, TEAM ADMIN, AND BRAND IDENTITY EDITING IN PLACE)
-  - [ ] 3.5 Build notification system for content generation completion and important events
-  - [ ] 3.6 Implement dark/light theme support with user preference storage
-  - [x] 3.7 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager) (RENAMED KROIDS, ICON ROW, SWITCHING WORKS)
-  - [ ] 3.8 Remove Paid Ads Specialist persona from dashboard for MVP
-  - [ ] 3.9 Create mobile-responsive interface for idea capture and monitoring workflows
-  - [ ] 3.10 Build search and filtering capabilities across all content and ideas
-  - [ ] 3.11 Implement keyboard shortcuts for power users (optional for MVP)
-  - [ ] 3.12 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
+  - [x] 3.5 Add brand deletion with confirmation modal and unrecoverable warning
+    - [x] Trash can icon for each brand in Manage Brands dashboard
+    - [x] Modal requires user to type 'Delete "BrandName" Brand' to confirm
+    - [x] Delete button only enabled if input matches
+    - [x] API endpoint deletes brand and all related data (cascading), admin-only
+    - [x] UI refreshes brand list on success, shows error on failure
+  - [ ] 3.6 Build notification system for content generation completion and important events
+  - [ ] 3.7 Implement dark/light theme support with user preference storage
+  - [x] 3.8 Add Persona Droids section to dashboard: summary and grid of core agentic personas (Orchestrator, Strategist, Copywriter, Designer, Analyst, Community Manager) (RENAMED KROIDS, ICON ROW, SWITCHING WORKS)
+  - [ ] 3.9 Remove Paid Ads Specialist persona from dashboard for MVP
+  - [ ] 3.10 Create mobile-responsive interface for idea capture and monitoring workflows
+  - [ ] 3.11 Build search and filtering capabilities across all content and ideas
+  - [ ] 3.12 Implement keyboard shortcuts for power users (optional for MVP)
+  - [ ] 3.13 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
 
 - [ ] 4.0 Social Media Platform Integrations
   - [ ] 4.1 Integrate Instagram Graph API for posting and scheduling

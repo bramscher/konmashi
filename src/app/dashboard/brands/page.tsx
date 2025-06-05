@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import BrandCreateForm from '@/components/brand/BrandCreateForm';
 import BrandIdentityForm from '@/components/brand/BrandIdentityForm';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Pencil, PlusCircle, X, Trash2 } from 'lucide-react';
+import { Pencil, PlusCircle, X, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 // TODO: Replace 'any' with a proper Brand type
 export default function ManageBrandsPage() {
   const [brands, setBrands] = useState<any[]>([]);
   const [editing, setEditing] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deleteModal, setDeleteModal] = useState<{ brand: any; open: boolean }>({ brand: null, open: false });
@@ -80,61 +82,78 @@ export default function ManageBrandsPage() {
       ) : brands.length === 0 ? (
         <div>No brands found.</div>
       ) : (
-        <div className="w-full max-w-2xl flex flex-col gap-6">
+        <div className="w-full max-w-2xl flex flex-col gap-4">
           {brands.map((brand: any) => {
-            // Determine if the identity is populated (not just brandName)
             const identity = brand.identity;
             const hasIdentity = identity && (
               identity.industry || identity.voiceDescriptors?.length > 0 || identity.targetAudience || identity.brandManifesto
             );
+            const isExpanded = expanded === brand.id;
             return (
-              <Card key={brand.id}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <span>{brand.name}</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="flex items-center gap-1 text-blue-600 underline text-sm"
-                        onClick={() => setEditing(editing === brand.id ? null : brand.id)}
-                      >
-                        {editing === brand.id ? (
-                          <><X className="w-4 h-4 mr-1" /> Cancel</>
-                        ) : hasIdentity ? (
-                          <><Pencil className="w-4 h-4 mr-1" /> Edit Identity</>
-                        ) : (
-                          <><PlusCircle className="w-4 h-4 mr-1" /> Set Up Identity</>
-                        )}
-                      </button>
-                      <button
-                        className="text-red-600 hover:text-red-800"
-                        title="Delete Brand"
-                        onClick={() => setDeleteModal({ brand, open: true })}
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </CardTitle>
+              <Card key={brand.id} className="transition-all">
+                <CardHeader className="flex flex-row items-center justify-between cursor-pointer px-4 py-2" style={{ minHeight: 0 }}>
+                  <div className="flex items-center gap-2 flex-1" onClick={() => setExpanded(isExpanded ? null : brand.id)}>
+                    {isExpanded ? (
+                      <ChevronDown className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-gray-500" />
+                    )}
+                    <span className="font-semibold text-lg">{brand.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2 ml-2">
+                    <button
+                      className="flex items-center gap-1 text-blue-600 underline text-sm"
+                      onClick={e => { e.stopPropagation(); setEditing(editing === brand.id ? null : brand.id); setExpanded(brand.id); }}
+                    >
+                      {editing === brand.id ? (
+                        <><X className="w-4 h-4 mr-1" /> Cancel</>
+                      ) : hasIdentity ? (
+                        <><Pencil className="w-4 h-4 mr-1" /> Edit Identity</>
+                      ) : (
+                        <><PlusCircle className="w-4 h-4 mr-1" /> Set Up Identity</>
+                      )}
+                    </button>
+                    <button
+                      className="text-red-600 hover:text-red-800"
+                      title="Delete Brand"
+                      onClick={e => { e.stopPropagation(); setDeleteModal({ brand, open: true }); }}
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  {editing === brand.id && (
-                    <BrandIdentityForm
-                      brand={brand}
-                      initial={brand.identity}
-                      onSave={() => {
-                        setEditing(null);
-                        fetchBrands();
-                      }}
-                    />
-                  )}
-                  {brand.identity && editing !== brand.id && (
-                    <div className="text-sm text-muted-foreground">
-                      <div><b>Industry:</b> {brand.identity.industry}</div>
-                      <div><b>Voice:</b> {(brand.identity.voiceDescriptors || []).join(', ')}</div>
-                      <div><b>Audience:</b> {brand.identity.targetAudience}</div>
-                      {brand.identity.brandManifesto && <div><b>Manifesto:</b> {brand.identity.brandManifesto}</div>}
-                    </div>
-                  )}
-                </CardContent>
+                {isExpanded && (
+                  <CardContent className="pt-2 pb-4 px-6">
+                    {editing === brand.id ? (
+                      <BrandIdentityForm
+                        brand={brand}
+                        initial={brand.identity}
+                        onSave={() => {
+                          setEditing(null);
+                          fetchBrands();
+                        }}
+                      />
+                    ) : brand.identity ? (
+                      <div className="text-sm text-muted-foreground">
+                        <div><b>Industry:</b> {brand.identity.industry}</div>
+                        <div><b>Voice:</b> {(brand.identity.voiceDescriptors || []).join(', ')}</div>
+                        <div><b>Audience:</b> {brand.identity.targetAudience}</div>
+                        {brand.identity.brandManifesto && (
+                          <div>
+                            <b>Manifesto:</b>
+                            <div className="prose dark:prose-invert mt-2">
+                              <ReactMarkdown>
+                                {brand.identity.brandManifesto}
+                              </ReactMarkdown>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-muted-foreground italic">No brand identity set up yet.</div>
+                    )}
+                  </CardContent>
+                )}
               </Card>
             );
           })}
