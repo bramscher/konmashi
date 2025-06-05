@@ -166,6 +166,9 @@ model Team {
   generatedContents GeneratedContent[]
   socialConnections SocialConnection[]
   brands         Brand[]
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  subscriptionStatus   String?
 
   @@map("teams")
 }

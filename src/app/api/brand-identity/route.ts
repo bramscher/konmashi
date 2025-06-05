@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
 
   try {
@@ -114,8 +114,14 @@ export async function GET() {
     }
 
     const userId = session.user.id;
+    // Get brandId from query string
+    const { searchParams } = new URL(req.url);
+    const brandId = searchParams.get('brandId');
+    if (!brandId) {
+      return NextResponse.json({ error: 'Missing brandId parameter' }, { status: 400 });
+    }
     const brandIdentity = await prisma.brandIdentity.findUnique({
-      where: { userId },
+      where: { userId_brandId: { userId, brandId } },
     });
 
     if (!brandIdentity) {
