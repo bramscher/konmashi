@@ -82,6 +82,13 @@ const NAV_SECTIONS = [
 
 type DroidKey = 'orchestrator' | 'strategist' | 'copywriter' | 'designer' | 'analyst' | 'community';
 
+// Define Brand type
+interface Brand {
+  id: string;
+  name: string;
+  // Add more fields as needed
+}
+
 export default function Sidebar() {
   const { selectedDroid: selectedPersona, setSelectedDroid: onSelectPersona } = useContext(KroidContext)
   const router = useRouter();
@@ -90,8 +97,8 @@ export default function Sidebar() {
     () => Object.fromEntries(NAV_SECTIONS.map(section => [section.label, true]))
   );
   // Brand switcher state
-  const [brands, setBrands] = useState<any[]>([]);
-  const [selectedBrand, setSelectedBrand] = useState<any>(null);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
 
   // Fetch brands on mount
   useEffect(() => {
@@ -103,10 +110,12 @@ export default function Sidebar() {
           setBrands(data.brands);
           // Try to restore last selected brand from localStorage
           const lastId = typeof window !== 'undefined' ? localStorage.getItem('selectedBrandId') : null;
-          const found = data.brands.find((b: any) => b.id === lastId) || data.brands[0];
+          const found = data.brands.find((b: Brand) => b.id === lastId) || data.brands[0];
           setSelectedBrand(found);
         }
-      } catch {}
+      } catch (_err) {
+        // ignore
+      }
     }
     fetchBrands();
   }, []);
@@ -147,7 +156,7 @@ export default function Sidebar() {
             <DropdownMenuContent className="w-64">
               <DropdownMenuLabel>Brands</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {brands.map((brand: any, idx: number) => (
+              {brands.map((brand, idx) => (
                 <DropdownMenuItem
                   key={brand.id}
                   onClick={() => setSelectedBrand(brand)}

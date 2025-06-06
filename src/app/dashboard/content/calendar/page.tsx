@@ -57,17 +57,6 @@ export default function ContentCalendarPage() {
         onSelect={setDate}
         className="rounded-md border shadow-sm mb-8"
         captionLayout="dropdown"
-        renderDay={(day) => {
-          const isEvent = eventDays.includes(day.toDateString());
-          return (
-            <div className="relative flex flex-col items-center">
-              <span>{day.getDate()}</span>
-              {isEvent && (
-                <span className="absolute bottom-0 w-1.5 h-1.5 rounded-full bg-primary mt-0.5" />
-              )}
-            </div>
-          );
-        }}
       />
       <h2 className="text-xl font-semibold mb-2">Scheduled Content</h2>
       <div className="overflow-x-auto">
