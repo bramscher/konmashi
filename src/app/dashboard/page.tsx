@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState, useContext } from 'react'
 import Sidebar from '@/components/dashboard/Sidebar'
 import DroidChat from '@/components/ui/PersonaChat'
-import { KroidContext } from './layout'
+import { KroidContext } from '@/app/ClientRoot'
 
 const DEFAULT_DROIDS = {
   orchestrator: {},
@@ -103,18 +103,10 @@ export default function DashboardPage() {
       <h1 className="text-2xl font-bold mb-2">
         {greeting}, {userName} <span className="text-primary font-bold">@</span> <span className="text-muted-foreground">{teamName}</span>, what do you want to do today?
       </h1>
-      {/* Two-column layout: Chat (left), Canvas (right) */}
-      <section className="mb-10 flex flex-col md:flex-row gap-6 h-[70vh]">
-        {/* Left: Chat or Persona Widget */}
-        <div className="flex-1 md:w-1/2 h-full flex flex-col">
-          {selectedDroid && <DroidChat droidKey={selectedDroid} />}
-        </div>
-        {/* Right: Canvas */}
-        <div className="flex-1 md:w-1/2 h-full bg-muted rounded-lg flex flex-col items-center justify-center">
-          <h2 className="text-xl font-semibold mb-2">Canvas Area</h2>
-          <p className="text-muted-foreground text-center max-w-xs">This area will display outputs, previews, and context for the selected persona. (To be flushed out.)</p>
-        </div>
-      </section>
+      {/* Main dashboard content: Chat or Persona Widget */}
+      <div className="flex-1 flex flex-col">
+        {selectedDroid && <DroidChat droidKey={selectedDroid} />}
+      </div>
       {/* Existing dashboard content can go here, or be moved into persona widgets as needed */}
     </>
   )

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Button } from '../ui/button';
 
 export default function InviteMemberForm({ onInvite }: { onInvite?: () => void }) {
   const [email, setEmail] = useState('');
@@ -69,9 +70,9 @@ export default function InviteMemberForm({ onInvite }: { onInvite?: () => void }
           placeholder="user@example.com"
           disabled={loading || atLimit}
         />
-        <button type="submit" className="bg-blue-600 text-white rounded px-4 py-2" disabled={loading || !email || atLimit}>
+        <Button type="submit" className="w-full" disabled={loading || !email || atLimit}>
           {loading ? 'Sending...' : 'Send Invite'}
-        </button>
+        </Button>
         {atLimit && (
           <div className="text-red-600">All licenses are in use. Upgrade your plan to add more members.</div>
         )}
@@ -79,25 +80,25 @@ export default function InviteMemberForm({ onInvite }: { onInvite?: () => void }
         {error && <div className="text-red-600">{error}</div>}
       </form>
       {atLimit && (
-        <button
+        <Button
           type="button"
-          className="mt-4 bg-primary text-white rounded px-4 py-2 hover:bg-primary/90"
+          className="mt-4 w-full"
           onClick={() => setShowModal(true)}
         >
           Upgrade Licenses
-        </button>
+        </Button>
       )}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
           <div className="bg-white dark:bg-gray-900 rounded shadow-lg p-8 max-w-sm w-full text-center relative">
             <h2 className="text-xl font-bold mb-4">Upgrade Licenses</h2>
             <p className="mb-6">Coming soon: Stripe integration for license upgrades.</p>
-            <button
-              className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
+            <Button
+              className="w-full"
               onClick={() => setShowModal(false)}
             >
               Close
-            </button>
+            </Button>
           </div>
         </div>
       )}

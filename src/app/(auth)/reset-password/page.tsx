@@ -136,7 +136,7 @@ export default function ResetPasswordPage() {
             <p className="mt-1 text-xs text-red-500 text-center">{error}</p>
           )}
 
-          <Button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-slate-50" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? 'Resetting Password...' : 'Reset Password'}
           </Button>
         </form>
