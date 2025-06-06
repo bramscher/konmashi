@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from '../ui/button';
 
 // TODO: Replace 'any' with a proper Brand type
 export default function BrandCreateForm({ onCreate }: { onCreate?: (brand: any) => void }) {
@@ -43,13 +44,13 @@ export default function BrandCreateForm({ onCreate }: { onCreate?: (brand: any) 
           required
         />
       </label>
-      <button
+      <Button
         type="submit"
-        className="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700"
+        className="w-full"
         disabled={loading || !name.trim()}
       >
         {loading ? 'Creating...' : 'Create Brand'}
-      </button>
+      </Button>
       {error && <div className="text-red-600">{error}</div>}
       {success && <div className="text-green-600">{success}</div>}
     </form>
