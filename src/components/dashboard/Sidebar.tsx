@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Settings as SettingsIcon,
   FileText,
@@ -10,6 +11,7 @@ import {
   Users,
   Bot
 } from 'lucide-react';
+import { KroidContext } from '@/app/ClientRoot';
 
 // Droids as compact icon row
 const DROIDS = [
@@ -65,10 +67,9 @@ const NAV_SECTIONS = [
 
 type DroidKey = 'orchestrator' | 'strategist' | 'copywriter' | 'designer' | 'analyst' | 'community';
 
-export default function Sidebar({ selectedPersona, onSelectPersona }: {
-  selectedPersona: DroidKey;
-  onSelectPersona: (persona: DroidKey) => void;
-}) {
+export default function Sidebar() {
+  const { selectedDroid: selectedPersona, setSelectedDroid: onSelectPersona } = useContext(KroidContext)
+  const router = useRouter();
   // Set all sections to expanded by default
   const [openSections, setOpenSections] = useState<{ [key: string]: boolean }>(
     () => Object.fromEntries(NAV_SECTIONS.map(section => [section.label, true]))
@@ -95,7 +96,10 @@ export default function Sidebar({ selectedPersona, onSelectPersona }: {
             <button
               key={droid.key}
               className={`rounded-full p-1 hover:bg-muted ${selectedPersona === droid.key ? 'bg-primary text-primary-foreground' : ''}`}
-              onClick={() => onSelectPersona(droid.key as DroidKey)}
+              onClick={() => {
+                onSelectPersona(droid.key as DroidKey);
+                router.push('/dashboard');
+              }}
               title={droid.name}
               aria-label={droid.name}
             >
