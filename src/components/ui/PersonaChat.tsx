@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './button';
 import { Textarea } from './textarea';
-import { Pencil } from 'lucide-react';
+import { Pencil, Bot, Target, PenLine, Palette, BarChart2, Users } from 'lucide-react';
 
 const DEFAULT_DROIDS = {
   orchestrator: {
@@ -30,17 +30,44 @@ const DEFAULT_DROIDS = {
   },
 };
 
+// Kroid icon mapping (match Sidebar)
+const KROID_ICONS: Record<string, JSX.Element> = {
+  orchestrator: <Bot size={28} />, // larger for chat header
+  strategist: <Target size={28} />,
+  copywriter: <PenLine size={28} />,
+  designer: <Palette size={28} />,
+  analyst: <BarChart2 size={28} />,
+  community: <Users size={28} />,
+};
+
 export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: keyof typeof DEFAULT_DROIDS }) {
   const [droids, setDroids] = useState(DEFAULT_DROIDS);
   const [editing, setEditing] = useState(false);
   const [editName, setEditName] = useState(droids[droidKey].name);
   const [editBrainPrompt, setEditBrainPrompt] = useState(droids[droidKey].brainPrompt);
   const [input, setInput] = useState('');
-  // Store chat history for each droid
-  const [histories, setHistories] = useState<{ [key: string]: { role: string; content: string }[] }>({});
+  // Store chat history for each droid, persist in localStorage
+  const [histories, setHistories] = useState<{ [key: string]: { role: string; content: string }[] }>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('kroidChatHistories');
+        return stored ? JSON.parse(stored) : {};
+      } catch {
+        return {};
+      }
+    }
+    return {};
+  });
   const messages = histories[droidKey] || [];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Persist histories to localStorage on change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('kroidChatHistories', JSON.stringify(histories));
+    }
+  }, [histories]);
 
   const handleEdit = () => {
     setEditName(droids[droidKey].name);
@@ -60,14 +87,13 @@ export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: ke
     e.preventDefault();
     if (!input.trim() || loading) return;
     setError(null);
-    // If this is the first message, add the user's message, then the droid's greeting as the first AI response
     const newMessages = [...messages, { role: 'user', content: input }];
     setHistories((prev) => ({ ...prev, [droidKey]: newMessages }));
     setInput('');
     setLoading(true);
     try {
-      // If this is the first message, show the droid's greeting as the first AI response
-      if (messages.length === 0) {
+      // Only show a greeting if the chat is empty and the user hasn't typed anything yet
+      if (messages.length === 0 && !input.match(/\w+\?/)) {
         const aiGreeting = {
           role: 'ai',
           content: `Hello, I am ${droids[droidKey].name}. What can I ${getRoleVerb(droidKey)} for you today?`,
@@ -76,6 +102,7 @@ export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: ke
         setLoading(false);
         return;
       }
+      // Otherwise, answer the user's question directly
       const res = await fetch('/api/ai/openai-chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -131,7 +158,7 @@ export default function DroidChat({ droidKey = 'orchestrator' }: { droidKey?: ke
           ) : (
             <>
               <h2 className="text-xl font-semibold flex items-center gap-2 mb-0">
-                <span className="text-2xl">🤖</span> {droids[droidKey].name}
+                <span className="text-2xl">{KROID_ICONS[droidKey]}</span> {droids[droidKey].name}
                 <button className="ml-2 text-muted-foreground hover:text-foreground p-1" onClick={handleEdit} aria-label="Edit droid name and brain prompt">
                   <Pencil size={16} className="inline align-text-bottom" />
                 </button>

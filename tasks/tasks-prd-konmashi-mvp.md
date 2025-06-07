@@ -181,6 +181,9 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 2.2.11 Each droid has a unique chat history and greeting
     - [x] 2.2.12 System prompt (brain prompt) is editable and only shown when editing
     - [x] 2.2.13 Chat is functional for all droids and updates correctly when switching
+    - [ ] 2.2.14 Assign unique icons to each Kroid and display them in the Sidebar and at the top of each chat window.
+    - [ ] 2.2.15 Update chat logic so that switching to a Kroid resumes the existing chat, and the first user input is always answered directly (no generic greeting if a question is asked).
+    - [ ] 2.2.16 Only show a greeting if the chat is empty and the user hasn't typed anything yet.
   - [ ] 2.3 Implement text-based social media post generation with brand voice integration
   - [ ] 2.4 Implement AI image-based post generation with brand style and caption creation
   - [ ] 2.5 Implement short-form video concept/script generation with faceless video suggestions

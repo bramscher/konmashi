@@ -68,7 +68,14 @@ Konmashi's Kroids are the heart of the platform's agentic model. Each Kroid repr
 - **Analyst** (performance, analytics)
 - **Community Manager** (engagement, feedback)
 
+**Each Kroid has a unique icon, which is displayed in the Sidebar for persona switching and at the top of each chat window to visually reinforce the active Kroid.**
+
 Each Kroid is accessible via the sidebar and chat, and users can switch between them to access different workflows and expertise. The Kroids' personalities, prompts, and functions are detailed in `# TeamPersonaStarter: Konmashi.md`.
+
+**Chat Behavior:**
+- When switching to a Kroid (via the sidebar or resuming a chat), the system resumes the existing chat if there is history.
+- If the user's first message is a question or prompt, the Kroid answers directly (does not respond with a generic greeting like "Hello, how can I help?").
+- A greeting is only shown if the chat is empty and the user has not typed anything yet.
 
 ## 3. Non Functional Requirements (MVP)
 

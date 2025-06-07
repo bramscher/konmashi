@@ -14,7 +14,10 @@ import {
   Building2,
   PlusCircle,
   Check,
-  ChevronRightIcon
+  ChevronRightIcon,
+  Target,
+  PenLine,
+  Palette
 } from 'lucide-react';
 import { KroidContext } from '@/app/ClientRoot';
 import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from '../ui/select';
@@ -31,9 +34,9 @@ import {
 // Droids as compact icon row
 const DROIDS = [
   { key: 'orchestrator', icon: <Bot size={20} />, name: 'Orchestrator' },
-  { key: 'strategist', icon: <FileText size={20} />, name: 'Strategist' },
-  { key: 'copywriter', icon: <FileText size={20} />, name: 'Copywriter' },
-  { key: 'designer', icon: <BadgePercent size={20} />, name: 'Designer' },
+  { key: 'strategist', icon: <Target size={20} />, name: 'Strategist' },
+  { key: 'copywriter', icon: <PenLine size={20} />, name: 'Copywriter' },
+  { key: 'designer', icon: <Palette size={20} />, name: 'Designer' },
   { key: 'analyst', icon: <BarChart2 size={20} />, name: 'Analyst' },
   { key: 'community', icon: <Users size={20} />, name: 'Community' },
 ];
