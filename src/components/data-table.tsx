@@ -684,10 +684,9 @@ function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
                     tickFormatter={(value) => value.slice(0, 3)}
                     hide
                   />
-                  <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent indicator="dot" />}
-                  />
+                  <ChartTooltip>
+                    <ChartTooltipContent indicator="dot" />
+                  </ChartTooltip>
                   <Area
                     dataKey="mobile"
                     type="natural"
