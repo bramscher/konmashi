@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { getDefaultBrandColor } from '@/lib/theme-config';
 
 export async function POST(req: NextRequest) {
   const supabase = createRouteHandlerClient({ cookies });
@@ -20,11 +21,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'You are not a member of any team.' }, { status: 403 });
   }
   const teamId = membership.teamId;
+  
+  // Get current brand count for this team to assign default color
+  const brandCount = await prisma.brand.count({ where: { teamId } });
+  const defaultThemeColor = getDefaultBrandColor(brandCount);
+  
   // Create the brand
   const brand = await prisma.brand.create({
     data: {
       name,
       teamId,
+      themeColor: defaultThemeColor,
       memberships: {
         create: {
           userId,

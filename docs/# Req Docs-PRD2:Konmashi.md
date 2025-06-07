@@ -28,7 +28,29 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * All data (brand identity, content, ideas, etc.) **shall** be isolated per team, with strict RBAC enforced (roles: ADMIN, MEMBER).
 * Team Admins **shall** be able to invite, remove, and manage members, and assign roles.
 * The system **shall** allow users to define and store core brand identity elements (e.g., brand voice, tone, key themes) through a guided setup process, scoped to the team.
+* The brand entity **shall** include a comprehensive digital brand kit/asset library, with the following sections:
+  - Logos (all variations, file types, usage guidelines)
+  - Color palette (primary, secondary, accent, codes, usage)
+  - Typography (fonts, files, usage rules)
+  - Imagery & graphics (style, assets, guidelines)
+  - Templates (social, print, presentation, etc.)
+  - Brand voice & messaging (manifesto, tagline, mission, tone)
+  - Design kit & theme (UI components, spacing, layouts)
+  - Digital asset library (centralized downloads, versioning, licensing)
+* The brand kit should follow best practices as outlined by Adobe, Microsoft, and leading branding agencies.
 * The system **shall** use the defined brand identity to inform all AI content generation.
+
+**Brand Theming System:**
+* The system **shall** provide a brand-specific theming system that applies unique colors throughout the entire application interface.
+* Each brand **shall** have an assignable theme color from the complete shadcn/ui color palette (22 colors: Red, Rose, Orange, Green, Blue, Yellow, Violet, Neutral, Stone, Zinc, Slate, Gray, Amber, Lime, Emerald, Teal, Cyan, Sky, Indigo, Purple, Fuchsia, Pink).
+* The system **shall** automatically assign default theme colors to new brands using a rotation cycle (Red → Rose → Orange → Green → Blue → Yellow → Violet for brands 1-9).
+* Theme colors **shall** apply to all primary UI elements including buttons, icons, navigation states, form focus states, and interactive elements.
+* The system **shall** switch themes in real-time when users select different brands, without requiring page refresh.
+* Theme selection **shall** persist across user sessions using localStorage.
+* Team Admins **shall** be able to change any brand's theme color via Settings → Brand Theme Administration.
+* Brand Admins **shall** be able to change their own brand's theme color via the Manage Brands interface.
+* The theming system **shall** use CSS custom properties to ensure all shadcn/ui components automatically inherit brand colors.
+* The system **shall** provide visual color swatches and real-time preview during theme selection.
 
 **License Management & Stripe Integration (Planned):**
 * Each team **shall** have a license count (number of seats/members allowed), enforced in the UI and backend.
@@ -109,7 +131,8 @@ Each Kroid is accessible via the sidebar and chat, and users can switch between 
 * **Overall Vision & Experience:**
     * **Desired Look and Feel:** The user interface (UI) and user experience (UX) for Konmashi should be perceived as "clean, modern, simple, and intuitive." It must be "cool, useful, and easy to use."
     * **Core User Experience:** The platform should evoke a feeling of "superhuman capabilities" by amplifying user efforts in content creation and management, yet it must achieve this without overwhelming users, particularly during their initial interactions and for core MVP workflows. The Kroids and team-based structure are central to this experience.
-    * **Brandability (especially for Premium/Agency Tiers):** The platform should offer capabilities for tenants (particularly premium or agency accounts) to "brand it a bit to feel like their own." This could involve aspects like logo placement, theme color adjustments, or custom domains, enhancing the agency's value proposition to their clients.
+    * **Brandability (especially for Premium/Agency Tiers):** The platform should offer capabilities for tenants (particularly premium or agency accounts) to "brand it a bit to feel like their own." This includes real-time brand theme customization with 22 color options, logo placement, and custom domains (planned), enhancing the agency's value proposition to their clients.
+    * **Brand-Specific Theming:** The entire application interface should dynamically reflect the selected brand's theme colors, creating a cohesive and branded experience that reinforces brand identity throughout all user interactions.
 * **Key Interaction Paradigms:**
     * **Conversational AI Interaction:** A primary method for initiating tasks and making requests will be through a natural language chat interface with the Orchestrator Kroid, designed for "easy button" simplicity and complex task delegation. Other Kroids are accessible via the sidebar for specialized workflows.
     * **Visual Planning & Workflow Management:**
@@ -596,3 +619,6 @@ Please engage the user in your "Create Architecture" task, review this PRD thoro
 
 ### Brand Card UX
 - The Manage Brands dashboard uses collapsible, single-expanded brand cards. Each card shows the brand name, chevron, and actions (edit, delete) always. Only one card can be expanded at a time to show details and the BrandIdentityForm.
+
+- The user avatar in the sidebar shall be selectable and editable.
+- Users can upload a new profile picture, which updates their Supabase Auth user_metadata.avatar_url and is reflected throughout the app.

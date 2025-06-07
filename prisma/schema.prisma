@@ -198,6 +198,7 @@ model Brand {
   id          String        @id @default(uuid())
   name        String
   teamId      String
+  themeColor  BrandThemeColor @default(RED)
   team        Team          @relation(fields: [teamId], references: [id], onDelete: Cascade)
   identities  BrandIdentity[]
   socialConnections SocialConnection[]
@@ -263,4 +264,29 @@ enum PostStatus {
 enum TeamRole {
   MEMBER
   ADMIN
+}
+
+enum BrandThemeColor {
+  RED
+  ROSE
+  ORANGE
+  GREEN
+  BLUE
+  YELLOW
+  VIOLET
+  NEUTRAL
+  STONE
+  ZINC
+  SLATE
+  GRAY
+  AMBER
+  LIME
+  EMERALD
+  TEAL
+  CYAN
+  SKY
+  INDIGO
+  PURPLE
+  FUCHSIA
+  PINK
 }

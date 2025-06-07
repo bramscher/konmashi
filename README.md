@@ -35,6 +35,8 @@ Konmashi supports two levels of admin:
 - **Multi-Platform Publishing:** Connect to Instagram, TikTok, YouTube, LinkedIn, Facebook & Pinterest.
 - **Smart Scheduling:** Schedule content across multiple platforms with optimized timing.
 - **Brand Intelligence:** AI learns your brand voice and maintains consistency.
+- **Multi-Brand Workspace:** Full Teams → Brands → Content hierarchy with brand-scoped data isolation.
+- **Brand Theming System:** Real-time theme switching with 22 shadcn/ui colors, admin controls, and persistent selection.
 - **Ideabank & Strategy:** Capture inspiration and manage your content pipeline.
 - **Performance Insights:** Track performance and improve your content strategy.
 
@@ -44,6 +46,8 @@ Konmashi supports two levels of admin:
 - **Multi-Platform Publishing**: Connect to Instagram, TikTok, YouTube, LinkedIn, Facebook & Pinterest
 - **Smart Scheduling**: Schedule content across multiple platforms with optimized timing
 - **Brand Intelligence**: AI learns your brand voice and maintains consistency
+- **Multi-Brand Management**: Manage multiple brands/clients with independent identities and themes
+- **Brand-Specific Theming**: Customize UI colors and themes per brand using shadcn/ui color system
 - **Ideabank & Strategy**: Capture inspiration and manage your content pipeline
 - **Performance Insights**: Track performance and improve your content strategy
 
@@ -130,18 +134,79 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
+## 🗄️ Working with Prisma
+
+### High-Level Overview
+
+Prisma is our Object-Relational Mapping (ORM) tool that provides:
+- **Type-safe database access** with auto-generated TypeScript types
+- **Schema management** through `prisma/schema.prisma`
+- **Database migrations** for version control of schema changes
+- **Visual database browser** via Prisma Studio
+
+### Key Prisma Commands (Cliff Notes)
+
+```bash
+# 🔄 Generate Prisma client (run after schema changes)
+npx prisma generate
+
+# 🚀 Push schema to database (development only)
+npx prisma db push
+
+# 📋 Create and apply migrations (production-ready)
+npx prisma migrate dev --name your_migration_name
+npx prisma migrate deploy
+
+# 🎨 Launch Prisma Studio (visual database browser)
+npx prisma studio
+
+# 🔍 View current database status
+npx prisma migrate status
+
+# 🗃️ Reset database (⚠️ DESTROYS ALL DATA)
+npx prisma migrate reset
+```
+
+### Prisma Studio Quick Guide
+
+Prisma Studio is a visual database browser that runs at `http://localhost:5555`:
+
+1. **Launch Studio**: `npx prisma studio`
+2. **Browse Tables**: Click any model (User, Team, Brand, etc.) to view/edit data
+3. **Create Records**: Use the "Add record" button
+4. **Edit Data**: Click any cell to modify values
+5. **Relationships**: Click linked records to navigate between related data
+6. **Filtering**: Use the filter bar to search/sort records
+
+**💡 Pro Tips:**
+- Studio auto-saves changes as you type
+- Perfect for testing data relationships and debugging
+- Use it to seed initial data or inspect generated content
+- Shows real-time data as your app creates/updates records
+
+### Development Workflow
+
+1. **Modify Schema**: Edit `prisma/schema.prisma`
+2. **Generate Client**: `npx prisma generate`
+3. **Update Database**: `npx prisma db push` (dev) or `npx prisma migrate dev` (production)
+4. **Verify Changes**: `npx prisma studio` to visually confirm
+
 ## 📊 Database Schema
 
 The application uses Prisma with PostgreSQL. Key models include:
 
 - **User**: User accounts (extends Supabase auth)
+- **Team**: Multi-tenant teams (companies/agencies)
+- **TeamMember**: Team memberships with role-based permissions
+- **Brand**: Brand entities with theme customization and identity
+- **BrandMember**: Brand-specific memberships and access control
 - **BrandIdentity**: Brand voice, tone, and identity information
-- **IdeabankEntry**: Captured ideas and inspiration
-- **ContentRequest**: Content generation requests
-- **GeneratedContent**: AI-generated content pieces
+- **IdeabankEntry**: Captured ideas and inspiration (brand-scoped)
+- **ContentRequest**: Content generation requests (brand-scoped)
+- **GeneratedContent**: AI-generated content pieces (brand-scoped)
 - **ContentFeedback**: User feedback for content iteration
-- **SocialConnection**: Social media platform connections
-- **ScheduledPost**: Scheduled content posts
+- **SocialConnection**: Social media platform connections (brand-scoped)
+- **ScheduledPost**: Scheduled content posts (brand-scoped)
 
 ## 🏗 Architecture
 
@@ -164,6 +229,41 @@ The application uses Prisma with PostgreSQL. Key models include:
 ├── tasks/
 │   └── prd-konmashi-mvp.md # Product Requirements Document
 └── docs/                  # Project documentation
+```
+
+## 🎨 Brand Theming System
+
+Konmashi features a comprehensive brand theming system that applies brand-specific colors throughout the entire application:
+
+### How It Works
+- **Real-time Theme Switching**: When users select a brand, the entire UI instantly updates with that brand's colors
+- **CSS Custom Properties**: Uses CSS variables that update dynamically across all shadcn/ui components
+- **Persistent Selection**: Brand and theme preferences are saved in localStorage
+- **22 Color Options**: Full shadcn/ui color palette (Red, Rose, Orange, Green, Blue, Yellow, Violet, etc.)
+
+### Where Colors Appear
+- **Navigation**: Sidebar icons, selected states, brand switcher
+- **Buttons**: All primary and accent buttons throughout the app
+- **Form Elements**: Input focus states, checkboxes, dropdowns
+- **Interactive Elements**: Hover states, active tabs, progress indicators
+- **Brand Elements**: Kroid selection, brand cards, theme selectors
+
+### Administration
+- **Team Admins**: Can change any brand's theme via Settings → Brand Theme Administration
+- **Brand Admins**: Can change their brand's theme via Manage Brands page
+- **Default Assignment**: New brands automatically get rotating default colors (Red → Rose → Orange → etc.)
+
+### For Developers
+```tsx
+// ✅ Correct - Uses theme colors automatically
+<Button className="bg-primary text-primary-foreground">
+  Primary Button
+</Button>
+
+// ❌ Avoid - Hard-coded colors
+<Button className="bg-red-500 text-white">
+  Don't do this
+</Button>
 ```
 
 ## 🔧 Development Workflow

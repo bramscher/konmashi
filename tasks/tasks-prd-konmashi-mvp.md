@@ -181,9 +181,9 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
     - [x] 2.2.11 Each droid has a unique chat history and greeting
     - [x] 2.2.12 System prompt (brain prompt) is editable and only shown when editing
     - [x] 2.2.13 Chat is functional for all droids and updates correctly when switching
-    - [ ] 2.2.14 Assign unique icons to each Kroid and display them in the Sidebar and at the top of each chat window.
-    - [ ] 2.2.15 Update chat logic so that switching to a Kroid resumes the existing chat, and the first user input is always answered directly (no generic greeting if a question is asked).
-    - [ ] 2.2.16 Only show a greeting if the chat is empty and the user hasn't typed anything yet.
+    - [x] 2.2.14 Assign unique icons to each Kroid and display them in the Sidebar and at the top of each chat window.
+    - [x] 2.2.15 Update chat logic so that switching to a Kroid resumes the existing chat, and the first user input is always answered directly (no generic greeting if a question is asked).
+    - [x] 2.2.16 Only show a greeting if the chat is empty and the user hasn't typed anything yet.
   - [ ] 2.3 Implement text-based social media post generation with brand voice integration
   - [ ] 2.4 Implement AI image-based post generation with brand style and caption creation
   - [ ] 2.5 Implement short-form video concept/script generation with faceless video suggestions
@@ -217,6 +217,22 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
   - [ ] 3.13 Build search and filtering capabilities across all content and ideas
   - [ ] 3.14 Implement keyboard shortcuts for power users (optional for MVP)
   - [ ] 3.15 Create contextual help system, onboarding tooltips, and accessibility features (WCAG 2.1 AA aspiration)
+  - [ ] 3.16 Expand brand entity to include a digital asset library, design kit, and theme section
+    - [ ] 3.16.1 Logos (all variations, file types, usage guidelines)
+    - [ ] 3.16.2 Color palette (primary, secondary, accent, codes, usage)
+    - [ ] 3.16.3 Typography (fonts, files, usage rules)
+    - [ ] 3.16.4 Imagery & graphics (style, assets, guidelines)
+    - [ ] 3.16.5 Templates (social, print, presentation, etc.)
+    - [ ] 3.16.6 Brand voice & messaging (manifesto, tagline, mission, tone)
+    - [ ] 3.16.7 Design kit & theme (UI components, spacing, layouts)
+    - [ ] 3.16.8 Digital asset library (centralized downloads, versioning, licensing)
+  - [ ] 3.17 Make the user avatar in the sidebar selectable and editable
+    - [ ] 3.17.1 Allow users to upload a new profile picture
+    - [ ] 3.17.2 Update Supabase Auth user_metadata.avatar_url with the new image
+    - [ ] 3.17.3 Ensure the new avatar is reflected throughout the app
+  - [ ] 3.18 Migrate all tables to use the official shadcn/ui Table component
+    - [x] 3.18.1 Scheduled Content table uses shadcn/ui Table
+    - [ ] 3.18.2 Migrate other legacy/custom tables as needed
 
 - [ ] 4.0 Social Media Platform Integrations
   - [ ] 4.1 Integrate Instagram Graph API for posting and scheduling
@@ -250,7 +266,7 @@ Based on the Product Requirements Document (PRD): Konmashi MVP
 
 - [x] Unify brand setup and management in Manage Brands dashboard (`/dashboard/brands`)
   - [x] Inline add/edit brand
-  - [x] Inline brand identity setup/edit
+  - [x] Inline brand identity setup/editn
   - [x] Onboarding redirects to Manage Brands if brands exist
   - [x] Deprecated separate Add Brand and Brand Setup pages
 

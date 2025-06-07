@@ -119,10 +119,20 @@ Each Kroid is accessible via the sidebar and chat, and users can switch between 
 - **Brand Deletion Flow:** Safe deletion with confirmation modal (type 'Delete "BrandName" Brand'), admin-only, cascades to all related data.
 - **BrandIdentity Data Model:** Supports multiple BrandIdentities per user/team/brand. Compound unique key on `[userId, brandId]` ensures no overwrites.
 - **Markdown Manifesto Rendering:** Brand manifesto field supports up to 4000 characters and renders Markdown beautifully in the UI using `react-markdown` and Tailwind's `prose` classes.
+- **Brand Theming System:** Comprehensive theming system with 22 shadcn/ui colors, real-time theme switching, automatic brand color application throughout the entire UI, admin controls, and persistent theme selection across sessions.
 - **Persona-Driven (Kroids) Workflows:** Sidebar and chat are built around agentic personas (Kroids) for specialized content workflows.
 - **License Management & Stripe Integration:** License count is enforced in UI and backend. Admins can upgrade licenses (Stripe integration planned).
 - **Modern Admin Tools:** Team Admin dashboard for member invite, role change, removal, and license management. Superadmin model for platform-level control.
 - **UX Improvements:** Collapsible, single-expanded brand cards; onboarding redirects to Manage Brands if brands exist; settings and sidebar are modernized.
+
+### Brand Theming System
+- **Real-time Theme Application:** The entire application interface dynamically updates with brand-specific colors when users switch between brands, providing a cohesive branded experience.
+- **22 Color Options:** Complete shadcn/ui color palette available (Red, Rose, Orange, Green, Blue, Yellow, Violet, Neutral, Stone, Zinc, Slate, Gray, Amber, Lime, Emerald, Teal, Cyan, Sky, Indigo, Purple, Fuchsia, Pink).
+- **Automatic Color Assignment:** New brands automatically receive rotating default colors (Red → Rose → Orange → Green → Blue → Yellow → Violet for brands 1-9).
+- **Admin Controls:** Team Admins can manage all brand themes via Settings → Brand Theme Administration; Brand Admins can change their own brand's theme via Manage Brands.
+- **CSS Custom Properties:** Uses CSS variables to ensure all shadcn/ui components automatically inherit brand colors without manual updates.
+- **Persistent Selection:** Theme and brand selection persists across user sessions using localStorage.
+- **Visual Interface:** Color selection includes visual swatches with real-time preview and immediate application.
 
 ### Markdown Support for Brand Manifesto
 - The brand manifesto field supports full Markdown formatting. Use headings, lists, bold, italics, and links for rich brand storytelling. Rendered with `react-markdown` and styled with Tailwind's `prose` classes for beautiful display.

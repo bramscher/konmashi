@@ -28,6 +28,17 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * The system **shall** ensure all content, brand identity, ideabank, and social connections are associated with a Team, not just a user.
 * The system **shall** allow users to be members of multiple Teams, with role-based access control (RBAC) enforced per Team.
 
+**Brand Theming System:**
+* The system **shall** provide a comprehensive brand-specific theming system that applies unique colors throughout the entire application interface.
+* Each brand **shall** have an assignable theme color from the complete shadcn/ui color palette (22 colors total).
+* The system **shall** automatically assign default theme colors to new brands using a rotation cycle (Red → Rose → Orange → Green → Blue → Yellow → Violet for brands 1-9).
+* Theme colors **shall** apply in real-time to all primary UI elements including buttons, icons, navigation states, form focus states, and interactive elements.
+* The system **shall** switch themes instantly when users select different brands, without requiring page refresh.
+* Theme selection **shall** persist across user sessions using localStorage.
+* Team Admins **shall** be able to change any brand's theme color via Settings → Brand Theme Administration.
+* Brand Admins **shall** be able to change their own brand's theme color via the Manage Brands interface.
+* The theming system **shall** use CSS custom properties to ensure all shadcn/ui components automatically inherit brand colors.
+
 **Content Ideation & Initiation:**
 * The system **shall** provide a conversational chat interface (via an "Orchestrator AI") for users to submit simple content creation requests.
 * The system **shall** allow users to capture, store, and view text-based ideas and web links in a basic "Ideabank."
@@ -87,7 +98,8 @@ Konmashi operates in a rapidly evolving digital landscape where the demand for f
 * **Desired Look and Feel:** The user interface (UI) and user experience (UX) for Konmashi should be perceived as "clean, modern, simple, and intuitive." It must be "cool, useful, and easy to use."
 * **Core User Experience:** The platform should evoke a feeling of "superhuman capabilities" by amplifying user efforts in content creation and management, yet it must achieve this without overwhelming users, particularly during their initial interactions and for core MVP workflows.
 * **Agentic Droid-Driven Experience:** Users interact with a virtual team of AI droids (see 'Agentic Droids & Team Model')—each droid brings unique expertise, communication style, and workflow to the user, making the experience feel like working with a real agency team. The Orchestrator AI routes requests to the appropriate droid(s) based on the task (e.g., content plan → Strategist, post copy → Copywriter, analytics → Metrics, etc.).
-* **Brandability (especially for Premium/Agency Tiers):** The platform should offer capabilities for tenants (particularly premium or agency accounts) to "brand it a bit to feel like their own." This could involve aspects like logo placement, theme color adjustments, or custom domains, enhancing the agency's value proposition to their clients.
+* **Brandability (especially for Premium/Agency Tiers):** The platform should offer capabilities for tenants (particularly premium or agency accounts) to "brand it a bit to feel like their own." This includes real-time brand theme customization with 22 color options, logo placement, and custom domains (planned), enhancing the agency's value proposition to their clients.
+* **Brand-Specific Theming:** The entire application interface should dynamically reflect the selected brand's theme colors, creating a cohesive and branded experience that reinforces brand identity throughout all user interactions.
 
 **Key Differentiators:**
 * **Kanban Boards:** Both the Ideabank Kanban and Content Lifecycle Kanban are central to the user experience, enabling users to visually manage ideas and content as they move through all stages of creation, refinement, and publishing.
